@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IncludeSymbols>true</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<Version>2.0.0</Version>
+	<Authors>Daniele Fusi</Authors>
+	<Company>Fusi</Company>
+	<Product>Cadmus</Product>
+	<NeutralLanguage>en-US</NeutralLanguage>
+	<Description>Cadmus philology parts seeders.</Description>
+	<Copyright>By Daniele Fusi</Copyright>
+	<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+	<PackageTags>Cadmus;seed</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cadmus.Seed" Version="1.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cadmus.Philology.Parts\Cadmus.Philology.Parts.csproj" />
+  </ItemGroup>
+
+</Project>

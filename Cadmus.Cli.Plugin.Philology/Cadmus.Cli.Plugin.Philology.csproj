@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Cadmus.Cli.Core" Version="1.1.2" />
+	<PackageReference Include="Cadmus.Mongo" Version="2.5.2" />
+	<PackageReference Include="Cadmus.Seed.General.Parts" Version="1.0.0" />
+	<PackageReference Include="Fusi.Microsoft.Extensions.Configuration.InMemoryJson" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cadmus.Philology.Parts\Cadmus.Philology.Parts.csproj" />
+    <ProjectReference Include="..\Cadmus.Seed.Philology.Parts\Cadmus.Seed.Philology.Parts.csproj" />
+  </ItemGroup>
+</Project>
