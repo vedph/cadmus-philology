@@ -59,7 +59,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
         [Fact]
         public void Seed_OptionsNoText_Null()
         {
-            TokenTextLayerPartSeeder seeder = new TokenTextLayerPartSeeder();
+            TokenTextLayerPartSeeder seeder = new();
             seeder.SetSeedOptions(_seedOptions);
             seeder.Configure(new TokenTextLayerPartSeederOptions
             {
@@ -74,7 +74,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
         [Fact]
         public void Seed_Options_Ok()
         {
-            TokenTextLayerPartSeeder seeder = new TokenTextLayerPartSeeder();
+            TokenTextLayerPartSeeder seeder = new();
             seeder.SetSeedOptions(_seedOptions);
             seeder.Configure(new TokenTextLayerPartSeederOptions
             {
@@ -83,7 +83,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
 
             // item with text
             IItem item = _factory.GetItemSeeder().GetItem(1, "facet");
-            TokenTextPartSeeder textSeeder = new TokenTextPartSeeder();
+            TokenTextPartSeeder textSeeder = new();
             textSeeder.SetSeedOptions(_seedOptions);
             item.Parts.Add(textSeeder.GetPart(_item, null, _factory));
 

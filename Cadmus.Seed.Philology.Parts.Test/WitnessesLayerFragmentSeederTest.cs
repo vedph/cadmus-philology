@@ -22,22 +22,22 @@ namespace Cadmus.Seed.Philology.Parts.Test
         public void TypeHasTagAttribute()
         {
             Type t = typeof(WitnessesLayerFragmentSeeder);
-            TagAttribute attr = t.GetTypeInfo().GetCustomAttribute<TagAttribute>();
+            TagAttribute? attr = t.GetTypeInfo().GetCustomAttribute<TagAttribute>();
             Assert.NotNull(attr);
-            Assert.Equal("seed.fr.it.vedph.witnesses", attr.Tag);
+            Assert.Equal("seed.fr.it.vedph.witnesses", attr!.Tag);
         }
 
         [Fact]
         public void GetFragmentType_Ok()
         {
-            WitnessesLayerFragmentSeeder seeder = new WitnessesLayerFragmentSeeder();
+            WitnessesLayerFragmentSeeder seeder = new();
             Assert.Equal(typeof(WitnessesLayerFragment), seeder.GetFragmentType());
         }
 
         [Fact]
         public void Seed_NoOptions_Null()
         {
-            WitnessesLayerFragmentSeeder seeder = new WitnessesLayerFragmentSeeder();
+            WitnessesLayerFragmentSeeder seeder = new();
             seeder.SetSeedOptions(_seedOptions);
 
             Assert.Null(seeder.GetFragment(_item, "1.1", "alpha"));
@@ -46,7 +46,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
         [Fact]
         public void Seed_NoIds_Null()
         {
-            WitnessesLayerFragmentSeeder seeder = new WitnessesLayerFragmentSeeder();
+            WitnessesLayerFragmentSeeder seeder = new();
             seeder.SetSeedOptions(_seedOptions);
             seeder.Configure(new WitnessesLayerFragmentSeederOptions
             {
@@ -59,7 +59,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
         [Fact]
         public void Seed_ValidOptions_Ok()
         {
-            WitnessesLayerFragmentSeeder seeder = new WitnessesLayerFragmentSeeder();
+            WitnessesLayerFragmentSeeder seeder = new();
             seeder.SetSeedOptions(_seedOptions);
             string[] ids = new[]
                 {
@@ -76,10 +76,10 @@ namespace Cadmus.Seed.Philology.Parts.Test
 
             Assert.NotNull(fragment);
 
-            WitnessesLayerFragment fr = fragment as WitnessesLayerFragment;
+            WitnessesLayerFragment? fr = fragment as WitnessesLayerFragment;
             Assert.NotNull(fr);
 
-            Assert.Equal("1.1", fr.Location);
+            Assert.Equal("1.1", fr!.Location);
             Assert.NotEmpty(fr.Witnesses);
             foreach (Witness witness in fr.Witnesses)
             {

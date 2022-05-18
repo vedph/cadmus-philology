@@ -12,11 +12,12 @@ namespace Cadmus.Cli.Plugin.General
 {
     /// <summary>
     /// CLI repository factory provider for philologic parts.
+    /// Tag: <c>cli.repository-provider.philology</c>.
     /// </summary>
     /// <seealso cref="ICliRepositoryFactoryProvider" />
-    [Tag("repository-factory-provider.philology")]
-    public sealed class PhilologyCliRepositoryFactoryProvider :
-        ICliRepositoryFactoryProvider
+    [Tag("cli.repository-provider.philology")]
+    public sealed class PhilologyCliCadmusRepositoryProvider :
+        ICliCadmusRepositoryProvider
     {
         private readonly IPartTypeProvider _partTypeProvider;
 
@@ -27,9 +28,9 @@ namespace Cadmus.Cli.Plugin.General
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="PhilologyCliRepositoryFactoryProvider"/> class.
+        /// <see cref="PhilologyCliCadmusRepositoryProvider"/> class.
         /// </summary>
-        public PhilologyCliRepositoryFactoryProvider()
+        public PhilologyCliCadmusRepositoryProvider()
         {
             TagAttributeToTypeMap map = new();
             map.Add(new[]
