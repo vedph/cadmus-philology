@@ -15,6 +15,7 @@ namespace Cadmus.Cli.Plugin.General
     /// CLI philologic parts seeder factory provider.
     /// </summary>
     /// <seealso cref="ICliPartSeederFactoryProvider" />
+    [Obsolete("Replace CLI providers with API providers")]
     [Tag("part-seeder-factory-provider.philology")]
     public sealed class PhilologyCliPartSeederFactoryProvider
         : ICliPartSeederFactoryProvider

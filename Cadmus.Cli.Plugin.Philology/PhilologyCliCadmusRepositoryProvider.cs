@@ -15,6 +15,7 @@ namespace Cadmus.Cli.Plugin.General
     /// Tag: <c>cli.repository-provider.philology</c>.
     /// </summary>
     /// <seealso cref="ICliRepositoryFactoryProvider" />
+    [Obsolete("Replace CLI providers with API providers")]
     [Tag("cli.repository-provider.philology")]
     public sealed class PhilologyCliCadmusRepositoryProvider :
         ICliCadmusRepositoryProvider
