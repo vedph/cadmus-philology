@@ -15,7 +15,6 @@ namespace Cadmus.Philology.Parts
     [Tag("fr.it.vedph.apparatus")]
     public sealed class ApparatusLayerFragment : ITextLayerFragment
     {
-        #region Properties
         /// <summary>
         /// Gets or sets the location of this fragment.
         /// </summary>
@@ -32,13 +31,12 @@ namespace Cadmus.Philology.Parts
         /// categorization of some sort for that fragment, e.g. "margin",
         /// "interlinear", etc. This can be overridden by variants tag.
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the entries.
         /// </summary>
         public List<ApparatusEntry> Entries { get; set; }
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApparatusLayerFragment"/>
@@ -46,6 +44,7 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         public ApparatusLayerFragment()
         {
+            Location = "";
             Entries = new List<ApparatusEntry>();
         }
 
@@ -59,10 +58,9 @@ namespace Cadmus.Philology.Parts
         /// keys: <c>fr.variant</c>=variant (normalized if any, else just
         /// the variant), <c>fr.witness</c>=witness (filtered, with digits),
         /// <c>fr.author</c>=author (filtered, with digits).</returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
-            DataPinBuilder builder = new DataPinBuilder(
-                DataPinHelper.DefaultFilter);
+            DataPinBuilder builder = new(DataPinHelper.DefaultFilter);
 
             builder.Set(PartBase.FR_PREFIX + "tot", Entries?.Count ?? 0, false);
 
@@ -134,17 +132,17 @@ namespace Cadmus.Philology.Parts
         /// </returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder($"[Apparatus] {Location}");
+            StringBuilder sb = new($"[Apparatus] {Location}");
 
             switch (Entries?.Count ?? 0)
             {
                 case 1:
-                    sb.Append(' ').Append(Entries[0].ToString());
+                    sb.Append(' ').Append(Entries![0].ToString());
                     break;
                 case 0:
                     break;
                 default:
-                    sb.Append(' ').Append(Entries.Count);
+                    sb.Append(' ').Append(Entries!.Count);
                     break;
             }
 

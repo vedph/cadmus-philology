@@ -39,7 +39,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
         {
             OrthographyLayerFragmentSeeder seeder = new();
 
-            ITextLayerFragment fragment = seeder.GetFragment(_item, "1.1", "alpha");
+            ITextLayerFragment? fragment = seeder.GetFragment(_item, "1.1", "alpha");
 
             Assert.NotNull(fragment);
 
@@ -49,8 +49,8 @@ namespace Cadmus.Seed.Philology.Parts.Test
             Assert.Equal("1.1", fr!.Location);
             Assert.NotNull(fr.Standard);
             Assert.Single(fr.Operations);
-            MspOperation op = MspOperation.Parse(fr.Operations[0]);
-            Assert.Null(op.Tag);
+            MspOperation? op = MspOperation.Parse(fr.Operations[0]);
+            Assert.Null(op!.Tag);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
                 }
             });
 
-            ITextLayerFragment fragment = seeder.GetFragment(_item, "1.1", "alpha");
+            ITextLayerFragment? fragment = seeder.GetFragment(_item, "1.1", "alpha");
 
             Assert.NotNull(fragment);
 
@@ -78,8 +78,8 @@ namespace Cadmus.Seed.Philology.Parts.Test
             Assert.Equal("1.1", fr!.Location);
             Assert.NotNull(fr.Standard);
             Assert.Single(fr.Operations);
-            MspOperation op = MspOperation.Parse(fr.Operations[0]);
-            Assert.NotNull(op.Tag);
+            MspOperation? op = MspOperation.Parse(fr.Operations[0]);
+            Assert.NotNull(op!.Tag);
         }
     }
 }

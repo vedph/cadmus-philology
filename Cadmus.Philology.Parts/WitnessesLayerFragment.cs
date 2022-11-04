@@ -41,6 +41,7 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         public WitnessesLayerFragment()
         {
+            Location = "";
             Witnesses = new List<Witness>();
         }
 
@@ -54,10 +55,9 @@ namespace Cadmus.Philology.Parts
         /// to access further data.</param>
         /// <returns>Pins: <c>fr.tot-count</c>, and a list of pins with keys
         /// <c>fr.wid</c>=witness ID (filtered, with digits).</returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
-            DataPinBuilder builder = new DataPinBuilder(
-                DataPinHelper.DefaultFilter);
+            DataPinBuilder builder = new(DataPinHelper.DefaultFilter);
 
             builder.Set(PartBase.FR_PREFIX + "tot", Witnesses?.Count ?? 0, false);
 
@@ -109,22 +109,22 @@ namespace Cadmus.Philology.Parts
         /// <summary>
         /// Gets or sets the source identifier.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or sets the source citation.
         /// </summary>
-        public string Citation { get; set; }
+        public string? Citation { get; set; }
 
         /// <summary>
         /// Gets or sets the (usually Markdown) text.
         /// </summary>
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         /// Gets or sets an optional short note.
         /// </summary>
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         /// <summary>
         /// Converts to string.
@@ -134,8 +134,7 @@ namespace Cadmus.Philology.Parts
         /// </returns>
         public override string ToString()
         {
-            return $"{Id}, {Citation}: " +
-                   (Text?.Length > 50 ? Text.Substring(50) : Text);
+            return $"{Id}, {Citation}: " + (Text?.Length > 50 ? Text[50..] : Text);
         }
     }
 }

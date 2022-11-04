@@ -77,9 +77,9 @@ namespace Cadmus.Philology.Parts
     /// </remarks>
     public sealed class MspOperation
     {
-        private static readonly Regex _tagRegex = new Regex("^[-0-9a-zA-Z_.]+$");
+        private static readonly Regex _tagRegex = new("^[-0-9a-zA-Z_.]+$");
 
-        private static readonly Regex _opRegex = new Regex(
+        private static readonly Regex _opRegex = new(
             @"(?:""(?<va>[^""]+)"")?" +
             @"\@(?<ras>\d+)(?:[x×](?<ral>\d+))?" +
             @"\s*(?<op>[=>~])\s*" +
@@ -89,10 +89,10 @@ namespace Cadmus.Philology.Parts
             @"(?:\s*\{(?<note>[^}]+)\})?");
 
         private MspOperator _operator;
-        private string _tag;
-        private string _note;
-        private string _valueA;
-        private string _valueB;
+        private string? _tag;
+        private string? _note;
+        private string? _valueA;
+        private string? _valueB;
 
         #region Properties
         /// <summary>
@@ -149,7 +149,7 @@ namespace Cadmus.Philology.Parts
         /// <remarks>This value should include letters only; anyway, double-quotes
         /// characters are removed if present as they are reserved to be used
         /// as value delimiters. If empty, the value is coerced to null.</remarks>
-        public string ValueA
+        public string? ValueA
         {
             get { return _valueA; }
             set
@@ -166,7 +166,7 @@ namespace Cadmus.Philology.Parts
         /// <remarks>This value should include letters only; anyway, double-quotes
         /// characters are removed if present as they are reserved to be used
         /// as value delimiters. If empty, the value is coerced to null.</remarks>
-        public string ValueB
+        public string? ValueB
         {
             get { return _valueB; }
             set
@@ -182,13 +182,16 @@ namespace Cadmus.Philology.Parts
         /// digits 0-9, underscore, dash, and dot.
         /// </summary>
         /// <exception cref="ArgumentException">Invalid tag.</exception>
-        public string Tag
+        public string? Tag
         {
             get { return _tag; }
             set
             {
                 if (value != null && !_tagRegex.IsMatch(value))
-                    throw new ArgumentException(nameof(value));
+                {
+                    throw new ArgumentException("Invalid MSP operation tag",
+                        nameof(value));
+                }
                 _tag = value;
             }
         }
@@ -199,7 +202,7 @@ namespace Cadmus.Philology.Parts
         /// this property; also, note's spaces are normalized using
         /// <see cref="SanitizeNote(string)"/>.
         /// </summary>
-        public string Note
+        public string? Note
         {
             get { return _note; }
             set { _note = SanitizeNote(value); }
@@ -216,11 +219,11 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         /// <param name="note">The note.</param>
         /// <returns>The sanitized note, eventually null.</returns>
-        public static string SanitizeNote(string note)
+        public static string? SanitizeNote(string? note)
         {
             if (string.IsNullOrWhiteSpace(note)) return null;
 
-            StringBuilder sb = new StringBuilder(note);
+            StringBuilder sb = new(note);
             sb.Replace("{", "");
             sb.Replace("}", "");
 
@@ -252,9 +255,9 @@ namespace Cadmus.Philology.Parts
         /// Validates this instance.
         /// </summary>
         /// <returns>Error message(s), or null if valid.</returns>
-        public string[] Validate()
+        public IList<string>? Validate()
         {
-            List<string> errors = new List<string>();
+            List<string> errors = new();
 
             switch (_operator)
             {
@@ -286,7 +289,7 @@ namespace Cadmus.Philology.Parts
                     if (RangeB.Length == 0) errors.Add(Resources.MspSwapWithRbl0);
                     break;
             }
-            return errors.Count == 0? null : errors.ToArray();
+            return errors.Count == 0? null : errors;
         }
 
         /// <summary>
@@ -297,7 +300,7 @@ namespace Cadmus.Philology.Parts
         /// </returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             // ["A"]
             if (ValueA != null) sb.Append('"').Append(ValueA).Append('"');
             // @N[xN]
@@ -368,14 +371,14 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns>operation, or null if invalid text</returns>
-        public static MspOperation Parse(string text)
+        public static MspOperation? Parse(string? text)
         {
             if (string.IsNullOrWhiteSpace(text)) return null;
 
             Match m = _opRegex.Match(text);
             if (!m.Success) return null;
 
-            MspOperation operation = new MspOperation
+            MspOperation operation = new()
             {
                 RangeA = new TextRange(
                     ParseRangeNumber(m.Groups["ras"].Value),

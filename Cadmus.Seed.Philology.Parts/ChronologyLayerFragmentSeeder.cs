@@ -5,6 +5,7 @@ using Cadmus.Philology.Parts;
 using Fusi.Antiquity.Chronology;
 using Fusi.Tools.Config;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cadmus.Seed.Philology.Parts
@@ -17,7 +18,7 @@ namespace Cadmus.Seed.Philology.Parts
     public sealed class ChronologyLayerFragmentSeeder : FragmentSeederBase,
         IConfigurable<ChronologyLayerFragmentSeederOptions>
     {
-        private string[] _tags;
+        private IList<string> _tags;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -54,7 +55,7 @@ namespace Cadmus.Seed.Philology.Parts
         /// <returns>A new fragment.</returns>
         /// <exception cref="ArgumentNullException">item or location or
         /// baseText</exception>
-        public override ITextLayerFragment GetFragment(
+        public override ITextLayerFragment? GetFragment(
             IItem item, string location, string baseText)
         {
             if (item == null)
@@ -64,7 +65,7 @@ namespace Cadmus.Seed.Philology.Parts
             if (baseText == null)
                 throw new ArgumentNullException(nameof(baseText));
 
-            Faker f = new Faker();
+            Faker f = new();
             return new ChronologyLayerFragment
             {
                 Location = location,
@@ -90,6 +91,6 @@ namespace Cadmus.Seed.Philology.Parts
         /// <summary>
         /// Gets or sets the optional list of tags to pick from.
         /// </summary>
-        public string[] Tags { get; set; }
+        public IList<string>? Tags { get; set; }
     }
 }

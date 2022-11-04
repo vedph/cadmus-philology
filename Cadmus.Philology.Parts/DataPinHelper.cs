@@ -7,7 +7,7 @@ namespace Cadmus.Philology.Parts
     /// </summary>
     static internal class DataPinHelper
     {
-        private static StandardDataPinTextFilter _filter;
+        private static StandardDataPinTextFilter? _filter;
 
         /// <summary>
         /// Gets the default filter used for pins.
@@ -16,7 +16,7 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         static public IDataPinTextFilter DefaultFilter
         {
-            get { return _filter ?? (_filter = new StandardDataPinTextFilter()); }
+            get { return _filter ??= new StandardDataPinTextFilter(); }
         }
     }
 }

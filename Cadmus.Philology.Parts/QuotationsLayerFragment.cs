@@ -36,6 +36,7 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         public QuotationsLayerFragment()
         {
+            Location = "";
             Entries = new List<QuotationEntry>();
         }
 
@@ -49,10 +50,9 @@ namespace Cadmus.Philology.Parts
         /// keys: <c>fr.author</c> (filtered, with digits), <c>fr.work</c>
         /// (filtered, with digits), <c>fr.cit-uri</c>, <c>fr.tag-TAG-count</c>.
         /// </returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
-            DataPinBuilder builder = new DataPinBuilder(
-                DataPinHelper.DefaultFilter);
+            DataPinBuilder builder = new(DataPinHelper.DefaultFilter);
 
             builder.Set(PartBase.FR_PREFIX + "tot", Entries?.Count ?? 0, false);
 

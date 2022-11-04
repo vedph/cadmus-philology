@@ -4,6 +4,7 @@ using Cadmus.Core.Layers;
 using Cadmus.Philology.Parts;
 using Fusi.Tools.Config;
 using System;
+using System.Collections.Generic;
 
 namespace Cadmus.Seed.Philology.Parts
 {
@@ -16,7 +17,7 @@ namespace Cadmus.Seed.Philology.Parts
         FragmentSeederBase,
         IConfigurable<WitnessesLayerFragmentSeederOptions>
     {
-        private WitnessesLayerFragmentSeederOptions _options;
+        private WitnessesLayerFragmentSeederOptions? _options;
 
         /// <summary>
         /// Gets the type of the fragment.
@@ -42,7 +43,7 @@ namespace Cadmus.Seed.Philology.Parts
         /// <returns>A new fragment.</returns>
         /// <exception cref="ArgumentNullException">item or location or
         /// baseText</exception>
-        public override ITextLayerFragment GetFragment(
+        public override ITextLayerFragment? GetFragment(
             IItem item, string location, string baseText)
         {
             if (item == null)
@@ -52,10 +53,10 @@ namespace Cadmus.Seed.Philology.Parts
             if (baseText == null)
                 throw new ArgumentNullException(nameof(baseText));
 
-            if (_options?.Ids == null || _options.Ids.Length == 0)
+            if (_options?.Ids == null || _options.Ids.Count == 0)
                 return null;
 
-            WitnessesLayerFragment fragment = new WitnessesLayerFragment
+            WitnessesLayerFragment fragment = new()
             {
                 Location = location
             };
@@ -85,6 +86,6 @@ namespace Cadmus.Seed.Philology.Parts
         /// <summary>
         /// Gets or sets the source IDs to pick from.
         /// </summary>
-        public string[] Ids { get; set; }
+        public IList<string>? Ids { get; set; }
     }
 }

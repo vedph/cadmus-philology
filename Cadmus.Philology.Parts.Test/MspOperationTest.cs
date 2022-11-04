@@ -177,25 +177,25 @@ namespace Cadmus.Philology.Parts.Test
         [Fact]
         public void Parse_Null_Null()
         {
-            MspOperation op = MspOperation.Parse(null);
+            MspOperation? op = MspOperation.Parse(null);
             Assert.Null(op);
         }
 
         [Fact]
         public void Parse_Empty_Null()
         {
-            MspOperation op = MspOperation.Parse("");
+            MspOperation? op = MspOperation.Parse("");
             Assert.Null(op);
         }
 
         [Fact]
         public void Parse_Whitespaces_Null()
         {
-            MspOperation op = MspOperation.Parse("  \n  ");
+            MspOperation? op = MspOperation.Parse("  \n  ");
             Assert.Null(op);
         }
 
-        private string AppendTagAndNote(string op, string tag, string note)
+        private static string AppendTagAndNote(string op, string tag, string note)
         {
             StringBuilder sb = new(op);
             if (tag != null) sb.Append(" [").Append(tag).Append(']');
@@ -211,10 +211,11 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_Delete_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("@2x1=", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: delete
-            Assert.Equal(MspOperator.Delete, op.Operator);
+            Assert.Equal(MspOperator.Delete, op!.Operator);
             // ranges: A
             Assert.Equal("2", op.RangeA.ToString());
             Assert.Equal(TextRange.Empty, op.RangeB);
@@ -234,7 +235,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_DeleteWithEmptyValueB_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("@2x1=\"\"", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: delete
             Assert.Equal(MspOperator.Delete, op.Operator);
@@ -257,7 +259,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_DeleteWithValueA_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("\"a\"@2x1=", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: delete
             Assert.Equal(MspOperator.Delete, op.Operator);
@@ -281,7 +284,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_Insert_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("@2x0=\"s\"", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: delete
             Assert.Equal(MspOperator.Insert, op.Operator);
@@ -304,7 +308,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_Replace_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("@2x1=\"b\"", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: replace
             Assert.Equal(MspOperator.Replace, op.Operator);
@@ -327,7 +332,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_ReplaceWithValueA_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("\"a\"@2x1=\"b\"", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: replace
             Assert.Equal(MspOperator.Replace, op.Operator);
@@ -350,7 +356,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_Move_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("@2x1>@4", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: move
             Assert.Equal(MspOperator.Move, op.Operator);
@@ -373,7 +380,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_MoveWithValueA_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("\"a\"@2x1>@4", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: move
             Assert.Equal(MspOperator.Move, op.Operator);
@@ -396,7 +404,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_Swap_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("@2x1~@4x1", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: swap
             Assert.Equal(MspOperator.Swap, op.Operator);
@@ -419,7 +428,8 @@ namespace Cadmus.Philology.Parts.Test
         public void Parse_SwapWithValuesAB_Ok(string tag, string note)
         {
             string text = AppendTagAndNote("\"a\"@2x1~\"b\"@4x1", tag, note);
-            MspOperation op = MspOperation.Parse(text);
+            MspOperation? op = MspOperation.Parse(text);
+            Assert.NotNull(op);
 
             // op: swap
             Assert.Equal(MspOperator.Swap, op.Operator);

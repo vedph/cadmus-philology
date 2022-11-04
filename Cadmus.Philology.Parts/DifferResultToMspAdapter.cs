@@ -17,8 +17,8 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         public bool IsMovDisabled { get; set; }
 
-        private void MapDiffsWithReplacements(IList<Diff> diffs,
-            IList<Tuple<Diff, MspOperation>> output)
+        private static void MapDiffsWithReplacements(IList<Diff> diffs,
+            IList<Tuple<Diff, MspOperation?>> output)
         {
             int start = 1;
             for (int i = 0; i < diffs.Count; i++)
@@ -28,7 +28,7 @@ namespace Cadmus.Philology.Parts
                     && diffs[i + 1].operation == Operation.INSERT)
                 {
                     output.Add(
-                        Tuple.Create(diffs[i], new MspOperation
+                        Tuple.Create(diffs[i], (MspOperation?)new MspOperation
                         {
                             Operator = MspOperator.Replace,
                             RangeA = new TextRange(start, diffs[i].text.Length),
@@ -40,7 +40,7 @@ namespace Cadmus.Philology.Parts
                 }
                 else
                 {
-                    output.Add(Tuple.Create(diffs[i], (MspOperation)null));
+                    output.Add(Tuple.Create(diffs[i], (MspOperation?)null));
                     if (diffs[i].operation == Operation.DELETE
                         || diffs[i].operation == Operation.EQUAL)
                     {
@@ -50,7 +50,7 @@ namespace Cadmus.Philology.Parts
             }
         }
 
-        private void DetectMoves(List<Tuple<Diff, MspOperation>> mspDiffs)
+        private static void DetectMoves(List<Tuple<Diff, MspOperation?>> mspDiffs)
         {
             // first look for INS..DEL
             for (int i = 0; i < mspDiffs.Count; i++)
@@ -58,7 +58,7 @@ namespace Cadmus.Philology.Parts
                 // for each INS:
                 if (mspDiffs[i].Item2?.Operator == MspOperator.Insert)
                 {
-                    MspOperation ins = mspDiffs[i].Item2;
+                    MspOperation ins = mspDiffs[i].Item2!;
 
                     // find a DEL with the same value
                     var nextDel = mspDiffs
@@ -71,10 +71,10 @@ namespace Cadmus.Philology.Parts
                     if (nextDel != null)
                     {
                         int nextDelIndex = mspDiffs.IndexOf(nextDel);
-                        MspOperation del = mspDiffs[nextDelIndex].Item2;
+                        MspOperation del = mspDiffs[nextDelIndex].Item2!;
 
                         mspDiffs[nextDelIndex] = Tuple.Create(mspDiffs[nextDelIndex].Item1,
-                            new MspOperation
+                            (MspOperation?)new MspOperation
                             {
                                 Operator = MspOperator.Move,
                                 RangeA = del.RangeA,
@@ -93,7 +93,7 @@ namespace Cadmus.Philology.Parts
                 if (mspDiffs[i].Item2?.Operator == MspOperator.Delete)
                 {
                     // find an INS with the same value
-                    MspOperation del = mspDiffs[i].Item2;
+                    MspOperation del = mspDiffs[i].Item2!;
                     var nextIns = mspDiffs
                         .Skip(i + 1)
                         .FirstOrDefault(t =>
@@ -103,11 +103,11 @@ namespace Cadmus.Philology.Parts
                     // if found, assume a MOV from DEL to INS
                     if (nextIns != null)
                     {
-                        MspOperation ins = nextIns.Item2;
+                        MspOperation ins = nextIns.Item2!;
                         int nextInsIndex = mspDiffs.IndexOf(nextIns);
 
                         mspDiffs[i] = Tuple.Create(mspDiffs[i].Item1,
-                            new MspOperation
+                            (MspOperation?)new MspOperation
                             {
                                 Operator = MspOperator.Move,
                                 RangeA = del.RangeA,
@@ -132,8 +132,7 @@ namespace Cadmus.Philology.Parts
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
 
-            List<Tuple<Diff, MspOperation>> mspDiffs =
-                new List<Tuple<Diff, MspOperation>>();
+            List<Tuple<Diff, MspOperation?>> mspDiffs = new();
 
             MapDiffsWithReplacements(result, mspDiffs);
 
@@ -142,11 +141,11 @@ namespace Cadmus.Philology.Parts
             {
                 if (mspDiffs[i].Item2 != null)
                 {
-                    index += mspDiffs[i].Item2.RangeA.Length;
+                    index += mspDiffs[i].Item2!.RangeA.Length;
                     continue;
                 }
 
-                Tuple<Diff, MspOperation> t = mspDiffs[i];
+                Tuple<Diff, MspOperation?> t = mspDiffs[i];
                 switch (t.Item1.operation)
                 {
                     case Operation.EQUAL:
@@ -155,7 +154,7 @@ namespace Cadmus.Philology.Parts
 
                     case Operation.DELETE:
                         mspDiffs[i] = Tuple.Create(t.Item1,
-                            new MspOperation
+                            (MspOperation?)new MspOperation
                             {
                                 Operator = MspOperator.Delete,
                                 RangeA = new TextRange(index + 1, t.Item1.text.Length),
@@ -166,7 +165,7 @@ namespace Cadmus.Philology.Parts
 
                     case Operation.INSERT:
                         mspDiffs[i] = Tuple.Create(t.Item1,
-                            new MspOperation
+                            (MspOperation?)new MspOperation
                             {
                                 Operator = MspOperator.Insert,
                                 RangeA = new TextRange(index + 1, 0),
@@ -179,7 +178,7 @@ namespace Cadmus.Philology.Parts
             if (!IsMovDisabled) DetectMoves(mspDiffs);
 
             return mspDiffs.Where(t => t.Item2 != null)
-                .Select(t => t.Item2)
+                .Select(t => t.Item2!)
                 .ToList();
         }
     }

@@ -36,26 +36,26 @@ namespace Cadmus.Philology.Parts
         /// This usually is the scenario of apparatus entries imported from TEI
         /// documents, where tags cannot overlap.
         /// </remarks>
-        public string Subrange { get; set; }
+        public string? Subrange { get; set; }
 
         /// <summary>
         /// Gets or sets the tag, an optional arbitrary string representing a
         /// categorization of some sort for that fragment, e.g. "margin",
         /// "interlinear", etc. This can be overridden by variants tag.
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// Lemma variant text value; can be zero (null or empty) for a
         /// deletion. When <see cref="Type"/> is <see cref="ApparatusEntryType.Note"/>
         /// this property has no meaning, as it's not applicable.
         /// </summary>
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>
         /// An optional normalization of <see cref="Value"/>.
         /// </summary>
-        public string NormValue { get; set; }
+        public string? NormValue { get; set; }
 
         /// <summary>
         /// True if this variant has been accepted.
@@ -68,7 +68,7 @@ namespace Cadmus.Philology.Parts
         /// Gets or sets the group identifier, an optional arbitrary string used
         /// for grouping two or more fragments in the layer together.
         /// </summary>
-        public string GroupId { get; set; }
+        public string? GroupId { get; set; }
 
         /// <summary>
         /// Witnesses of this variant.
@@ -83,7 +83,7 @@ namespace Cadmus.Philology.Parts
         /// <summary>
         /// An optional short note.
         /// </summary>
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApparatusEntry"/> class.
@@ -102,9 +102,9 @@ namespace Cadmus.Philology.Parts
         /// </returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append(Enum.GetName(typeof(ApparatusEntryType), Type)
-                .ToLowerInvariant());
+                !.ToLowerInvariant());
 
             if (Type != ApparatusEntryType.Note)
             {
@@ -113,20 +113,23 @@ namespace Cadmus.Philology.Parts
                 if (!string.IsNullOrEmpty(Note))
                     sb.Append(" (").Append(Note).Append(')');
             }
-            else sb.Append(": ").Append(Note);
+            else
+            {
+                sb.Append(": ").Append(Note);
+            }
 
             if (Witnesses?.Count > 0)
             {
                 sb.Append(' ')
-                  .Append(string.Join(" ", from w in Witnesses
-                                           select w.ToString()));
+                  .AppendJoin(" ", from w in Witnesses
+                                   select w.ToString());
             }
             if (Authors?.Count > 0)
             {
                 if (Witnesses?.Count > 0) sb.Append(", ");
                 sb.Append(' ')
-                  .Append(string.Join(" ", from a in Authors
-                                           select a.ToString()));
+                  .AppendJoin(" ", from a in Authors
+                                   select a.ToString());
             }
 
             return sb.ToString();

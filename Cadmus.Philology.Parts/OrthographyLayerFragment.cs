@@ -33,7 +33,7 @@ namespace Cadmus.Philology.Parts
         /// Gets or sets the standard orthography form for the word linked to
         /// this fragment.
         /// </summary>
-        public string Standard { get; set; }
+        public string? Standard { get; set; }
 
         /// <summary>
         /// Gets or sets the operations describing the relationship between the
@@ -49,6 +49,7 @@ namespace Cadmus.Philology.Parts
         /// </summary>
         public OrthographyLayerFragment()
         {
+            Location = "";
             Operations = new List<string>();
         }
 
@@ -69,9 +70,9 @@ namespace Cadmus.Philology.Parts
         /// <see cref="Standard"/> orthography from this fragment.</para>
         /// </remarks>
         /// <returns>The pins.</returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
-            List<DataPin> pins = new List<DataPin>();
+            List<DataPin> pins = new();
 
             if (Operations?.Count > 0)
             {
@@ -95,22 +96,22 @@ namespace Cadmus.Philology.Parts
             if (item != null)
             {
                 // get the base text part
-                IPart textPart = item.Parts
+                IPart? textPart = item.Parts
                     .Find(p => p.RoleId == PartBase.BASE_TEXT_ROLE_ID);
                 if (textPart == null) return pins;
 
                 // get the orthography layer
                 TagAttribute attr = GetType().GetTypeInfo()
-                    .GetCustomAttribute<TagAttribute>();
-                Regex roleIdRegex = new Regex("^" + attr.Tag + "(?::.+)?$");
+                    .GetCustomAttribute<TagAttribute>()!;
+                Regex roleIdRegex = new("^" + attr.Tag + "(?::.+)?$");
 
-                IHasFragments<OrthographyLayerFragment> layerPart =
+                IHasFragments<OrthographyLayerFragment>? layerPart =
                     item.Parts.Find(p => p.RoleId != null
                         && roleIdRegex.IsMatch(p.RoleId))
                     as IHasFragments<OrthographyLayerFragment>;
                 if (layerPart == null) return pins;
 
-                string baseText = layerPart.GetTextAt(textPart, Location);
+                string? baseText = layerPart.GetTextAt(textPart, Location);
                 if (baseText != null)
                 {
                     pins.Add(new DataPin

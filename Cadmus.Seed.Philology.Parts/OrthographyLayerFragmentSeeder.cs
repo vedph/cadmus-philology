@@ -4,6 +4,7 @@ using Cadmus.Philology.Parts;
 using Fusi.Tools.Config;
 using Fusi.Tools.Text;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Cadmus.Seed.Philology.Parts
@@ -18,7 +19,7 @@ namespace Cadmus.Seed.Philology.Parts
     public sealed class OrthographyLayerFragmentSeeder : FragmentSeederBase,
         IConfigurable<OrthographyLayerFragmentSeederOptions>
     {
-        private OrthographyLayerFragmentSeederOptions _options;
+        private OrthographyLayerFragmentSeederOptions? _options;
 
         /// <summary>
         /// Gets the type of the fragment.
@@ -37,7 +38,7 @@ namespace Cadmus.Seed.Philology.Parts
 
         private static string ChangeLetterAt(string text, int index)
         {
-            StringBuilder sb = new StringBuilder(text);
+            StringBuilder sb = new(text);
             char c = (char)(1 + char.ToLowerInvariant(text[index]));
             if (!char.IsLetter(c)) c = 'a';
             sb[index] = c;
@@ -53,7 +54,7 @@ namespace Cadmus.Seed.Philology.Parts
         /// <returns>A new fragment.</returns>
         /// <exception cref="ArgumentNullException">item or location or
         /// baseText</exception>
-        public override ITextLayerFragment GetFragment(
+        public override ITextLayerFragment? GetFragment(
             IItem item, string location, string baseText)
         {
             if (item == null)
@@ -76,17 +77,17 @@ namespace Cadmus.Seed.Philology.Parts
             string standard = ChangeLetterAt(baseText, i);
 
             // create operation
-            MspOperation op = new MspOperation
+            MspOperation op = new()
             {
                 Operator = MspOperator.Replace,
                 RangeA = new TextRange(i, 1),
                 ValueA = new string(baseText[i], 1),
                 ValueB = new string(standard[i], 1),
-                Tag = _options?.Tags?.Length > 0
+                Tag = _options?.Tags?.Count > 0
                     ? SeedHelper.RandomPickOneOf(_options.Tags) : null
             };
 
-            OrthographyLayerFragment fragment = new OrthographyLayerFragment
+            OrthographyLayerFragment fragment = new()
             {
                 Location = location,
                 Standard = standard
@@ -106,6 +107,6 @@ namespace Cadmus.Seed.Philology.Parts
         /// The optional tags to randomaly assign to msp operations.
         /// Leave this null to avoid assigning tags.
         /// </summary>
-        public string[] Tags { get; set; }
+        public IList<string>? Tags { get; set; }
     }
 }

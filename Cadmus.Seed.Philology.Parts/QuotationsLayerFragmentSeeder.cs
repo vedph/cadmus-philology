@@ -21,7 +21,7 @@ namespace Cadmus.Seed.Philology.Parts
         IConfigurable<QuotationLayerFragmentSeederOptions>
     {
         private readonly List<int> _authorNumbers;
-        private string[] _authors;
+        private IList<string> _authors;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -59,7 +59,7 @@ namespace Cadmus.Seed.Philology.Parts
         /// <returns>A new fragment.</returns>
         /// <exception cref="ArgumentNullException">item or location or
         /// baseText</exception>
-        public override ITextLayerFragment GetFragment(
+        public override ITextLayerFragment? GetFragment(
             IItem item, string location, string baseText)
         {
             if (item == null)
@@ -69,15 +69,15 @@ namespace Cadmus.Seed.Philology.Parts
             if (baseText == null)
                 throw new ArgumentNullException(nameof(baseText));
 
-            Faker f = new Faker();
-            QuotationsLayerFragment fr = new QuotationsLayerFragment
+            Faker f = new();
+            QuotationsLayerFragment fr = new()
             {
                 Location = location
             };
             int n = Randomizer.Seed.Next(1, 4);
             for (int i = 1; i <= n; i++)
             {
-                string author = SeedHelper.RandomPickOneOf(_authors);
+                string author = SeedHelper.RandomPickOneOf(_authors)!;
                 string work = f.Lorem.Word();
 
                 fr.Entries.Add(new QuotationEntry
@@ -108,6 +108,6 @@ namespace Cadmus.Seed.Philology.Parts
         /// Gets or sets the authors to pick from. If not specified, names
         /// like "author1", "author2", etc. will be used.
         /// </summary>
-        public string[] Authors { get; set; }
+        public IList<string>? Authors { get; set; }
     }
 }

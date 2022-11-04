@@ -20,7 +20,7 @@ namespace Cadmus.Seed.Philology.Parts
         IConfigurable<ApparatusLayerFragmentSeederOptions>
     {
         private readonly List<int> _witAndAuthorNumbers;
-        private string[] _authors;
+        private IList<string> _authors;
         private readonly string[] _witnesses;
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Cadmus.Seed.Philology.Parts
         /// <returns>A new fragment.</returns>
         /// <exception cref="ArgumentNullException">item or location or
         /// baseText</exception>
-        public override ITextLayerFragment GetFragment(
+        public override ITextLayerFragment? GetFragment(
             IItem item, string location, string baseText)
         {
             if (item == null)
@@ -72,8 +72,8 @@ namespace Cadmus.Seed.Philology.Parts
             if (baseText == null)
                 throw new ArgumentNullException(nameof(baseText));
 
-            Faker f = new Faker();
-            ApparatusLayerFragment fr = new ApparatusLayerFragment
+            Faker f = new();
+            ApparatusLayerFragment fr = new()
             {
                 Location = location,
                 Tag = f.Lorem.Word()
@@ -81,7 +81,7 @@ namespace Cadmus.Seed.Philology.Parts
             int n = Randomizer.Seed.Next(1, 4);
             for (int i = 1; i <= n; i++)
             {
-                ApparatusEntry entry = new ApparatusEntry
+                ApparatusEntry entry = new()
                 {
                     Type = (ApparatusEntryType)Randomizer.Seed.Next(0, 4)
                 };
@@ -92,7 +92,7 @@ namespace Cadmus.Seed.Philology.Parts
                 {
                     entry.Note = f.Lorem.Sentence();
                     // authors
-                    foreach (string author in SeedHelper.RandomPickOf(_authors, 2))
+                    foreach (string author in SeedHelper.RandomPickOf(_authors, 2)!)
                     {
                         entry.Authors.Add(
                             new LocAnnotatedValue
@@ -110,14 +110,14 @@ namespace Cadmus.Seed.Philology.Parts
                     entry.IsAccepted = i == 1;
 
                     // witnesses
-                    foreach (string witness in SeedHelper.RandomPickOf(_witnesses, 2))
+                    foreach (string witness in SeedHelper.RandomPickOf(_witnesses, 2)!)
                     {
                         entry.Witnesses.Add(
                             new AnnotatedValue { Value = witness });
                     }
 
                     // authors
-                    foreach (string author in SeedHelper.RandomPickOf(_authors, 1))
+                    foreach (string author in SeedHelper.RandomPickOf(_authors, 1)!)
                     {
                         entry.Authors.Add(
                             new LocAnnotatedValue
@@ -144,6 +144,6 @@ namespace Cadmus.Seed.Philology.Parts
         /// Gets or sets the authors to pick from. If not specified, names
         /// like "author1", "author2", etc. will be used.
         /// </summary>
-        public string[] Authors { get; set; }
+        public IList<string>? Authors { get; set; }
     }
 }

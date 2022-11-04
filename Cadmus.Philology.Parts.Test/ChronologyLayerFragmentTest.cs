@@ -45,7 +45,7 @@ namespace Cadmus.Philology.Parts.Test
             Assert.Equal(fr.Location, fr2!.Location);
             Assert.Equal(fr.Label, fr2.Label);
             Assert.Equal(fr.Tag, fr2.Tag);
-            Assert.Equal(fr.Date.ToString(), fr2.Date.ToString());
+            Assert.Equal(fr.Date!.ToString(), fr2.Date!.ToString());
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace Cadmus.Philology.Parts.Test
             DataPin pin = pins[0];
             Assert.Equal("fr.date-value", pin.Name);
             Assert.Equal(
-                fr.Date.GetSortValue().ToString(CultureInfo.InvariantCulture),
+                fr.Date!.GetSortValue().ToString(CultureInfo.InvariantCulture),
                 pin.Value);
         }
 
@@ -86,7 +86,7 @@ namespace Cadmus.Philology.Parts.Test
             DataPin? pin = pins.Find(p => p.Name == "fr.date-value");
             Assert.NotNull(pin);
             Assert.Equal(
-                fr.Date.GetSortValue().ToString(CultureInfo.InvariantCulture),
+                fr.Date!.GetSortValue().ToString(CultureInfo.InvariantCulture),
                 pin!.Value);
 
             pin = pins.Find(p => p.Name == "fr.tag");
@@ -106,7 +106,7 @@ namespace Cadmus.Philology.Parts.Test
             DataPin? pin = pins.Find(p => p.Name == "fr.date-value");
             Assert.NotNull(pin);
             Assert.Equal(
-                fr.Date.GetSortValue().ToString(CultureInfo.InvariantCulture),
+                fr.Date!.GetSortValue().ToString(CultureInfo.InvariantCulture),
                 pin!.Value);
 
             pin = pins.Find(p => p.Name == "fr.tag");

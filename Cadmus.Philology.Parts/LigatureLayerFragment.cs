@@ -49,6 +49,15 @@ namespace Cadmus.Philology.Parts
         public LigatureType Type { get; set; }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LigatureLayerFragment"/>
+        /// class.
+        /// </summary>
+        public LigatureLayerFragment()
+        {
+            Location = "";
+        }
+
+        /// <summary>
         /// Get all the key=value pairs exposed by the implementor.
         /// </summary>
         /// <param name="item">The optional item. The item with its parts
@@ -57,7 +66,7 @@ namespace Cadmus.Philology.Parts
         /// <returns>The pins: <c>fr.ligature</c>=ligature type letter (one
         /// letter picked from <c>LIORGNCX</c>, each representing a ligature
         /// type; see <see cref="LigatureType"/>).</returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
             return new[]
             {
@@ -116,7 +125,7 @@ namespace Cadmus.Philology.Parts
         /// Converts to string.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="string" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

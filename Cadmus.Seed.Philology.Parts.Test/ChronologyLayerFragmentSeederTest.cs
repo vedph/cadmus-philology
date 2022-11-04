@@ -49,7 +49,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
                 }
             });
 
-            ITextLayerFragment fragment = seeder.GetFragment(_item, "1.1", "alpha");
+            ITextLayerFragment? fragment = seeder.GetFragment(_item, "1.1", "alpha");
 
             Assert.NotNull(fragment);
 
@@ -58,7 +58,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
 
             Assert.Equal("1.1", fr!.Location);
             Assert.NotNull(fr.Label);
-            Assert.False(fr.Date.A.IsUndefined());
+            Assert.False(fr.Date!.A.IsUndefined());
             Assert.NotNull(fr.EventId);
             Assert.NotNull(fr.Tag);
         }

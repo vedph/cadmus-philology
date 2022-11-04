@@ -28,7 +28,7 @@ namespace Cadmus.Philology.Parts
         /// <summary>
         /// Gets or sets the metre (e.g. <c>3ia</c>=iambic trimeter.
         /// </summary>
-        public string Metre { get; set; }
+        public string? Metre { get; set; }
 
         /// <summary>
         /// Gets or sets the number for the portion of the base text this
@@ -41,7 +41,7 @@ namespace Cadmus.Philology.Parts
         /// At any rate, you should adopt a convention which allows sorting the
         /// fragments by their number value, treated as a raw string.
         /// </summary>
-        public string Number { get; set; }
+        public string? Number { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this verse is imperfectly
@@ -52,7 +52,16 @@ namespace Cadmus.Philology.Parts
         /// <summary>
         /// Gets or sets an optional note about this verse.
         /// </summary>
-        public string Note { get; set; }
+        public string? Note { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MetricsLayerFragment"/>
+        /// class.
+        /// </summary>
+        public MetricsLayerFragment()
+        {
+            Location = "";
+        }
 
         /// <summary>
         /// Get all the pins exposed by the implementor.
@@ -62,7 +71,7 @@ namespace Cadmus.Philology.Parts
         /// to access further data.</param>
         /// <returns>The pins: <c>fr.metre</c>=metre, suffixed with <c>*</c>
         /// when imperfect.</returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
             if (Metre == null) return Enumerable.Empty<DataPin>();
             return new[]

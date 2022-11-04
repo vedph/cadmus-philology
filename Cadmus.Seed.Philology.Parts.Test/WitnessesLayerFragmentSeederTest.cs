@@ -72,7 +72,7 @@ namespace Cadmus.Seed.Philology.Parts.Test
                 Ids = ids
             });
 
-            ITextLayerFragment fragment = seeder.GetFragment(_item, "1.1", "alpha");
+            ITextLayerFragment? fragment = seeder.GetFragment(_item, "1.1", "alpha");
 
             Assert.NotNull(fragment);
 

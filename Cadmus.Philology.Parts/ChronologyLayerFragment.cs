@@ -32,24 +32,33 @@ namespace Cadmus.Philology.Parts
         /// Gets or sets the tag, representing some sort of classification for
         /// the chronological indication (e.g. battle, treatise, etc.).
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the label (e.g. "battle of Marathon").
         /// </summary>
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
         /// <summary>
         /// Gets or sets an external event ID. This can be used to connect the
         /// datation in this fragment with a specific event in an external
         /// resource, e.g. an ontology.
         /// </summary>
-        public string EventId { get; set; }
+        public string? EventId { get; set; }
 
         /// <summary>
         /// Gets or sets the date.
         /// </summary>
-        public HistoricalDate Date { get; set; }
+        public HistoricalDate? Date { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChronologyLayerFragment"/>
+        /// class.
+        /// </summary>
+        public ChronologyLayerFragment()
+        {
+            Location = "";
+        }
 
         /// <summary>
         /// Get all the key=value pairs exposed by the implementor.
@@ -60,11 +69,11 @@ namespace Cadmus.Philology.Parts
         /// can optionally be passed to this method for those parts requiring
         /// to access further data.</param>
         /// <returns>Pins.</returns>
-        public IEnumerable<DataPin> GetDataPins(IItem item = null)
+        public IEnumerable<DataPin> GetDataPins(IItem? item = null)
         {
-            if (Date == null) return Enumerable.Empty<DataPin>();
+            if (Date is null) return Enumerable.Empty<DataPin>();
 
-            List<DataPin> pins = new List<DataPin>
+            List<DataPin> pins = new()
             {
                 new DataPin
                 {

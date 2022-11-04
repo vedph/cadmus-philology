@@ -8,12 +8,12 @@
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>
         /// Gets or sets the optional note.
         /// </summary>
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         /// <summary>
         /// Converts to string.
@@ -23,7 +23,7 @@
         /// </returns>
         public override string ToString()
         {
-            return string.IsNullOrEmpty(Note) ? Value : $"{Value} ({Note})";
+            return string.IsNullOrEmpty(Note) ? Value! : $"{Value} ({Note})";
         }
     }
 }

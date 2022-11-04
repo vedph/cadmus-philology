@@ -12,12 +12,12 @@ namespace Cadmus.Philology.Parts
         /// Gets or sets the tag, used to classify this value in any meaningful
         /// way.
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the location.
         /// </summary>
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         /// <summary>
         /// Converts to string.
@@ -27,7 +27,7 @@ namespace Cadmus.Philology.Parts
         /// </returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             if (!string.IsNullOrEmpty(Tag))
                 sb.Append('[').Append(Tag).Append(']');
 
