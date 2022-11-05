@@ -8,6 +8,10 @@ No part or fragment ID has been changed.
 
 ## History
 
+### 4.1.1
+
+- 2022-11-04: updated packages.
+
 ### 4.1.0
 
 - 2022-11-04: updated packages (nullability enabled in Cadmus core).
