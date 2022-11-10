@@ -8,6 +8,10 @@ No part or fragment ID has been changed.
 
 ## History
 
+### 5.0.0
+
+- 2022-11-10: upgraded to NET 7.
+
 ### 4.1.1
 
 - 2022-11-04: updated packages.

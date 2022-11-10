@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 	<Nullable>enable</Nullable>
     <IncludeSymbols>true</IncludeSymbols>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	<Version>4.1.1</Version>
+	<Version>5.0.0</Version>
 	<Authors>Daniele Fusi</Authors>
 	<Company>Fusi</Company>
 	<Product>Cadmus</Product>
@@ -14,12 +14,12 @@
 	<Copyright>By Daniele Fusi</Copyright>
 	<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 	<PackageTags>Cadmus;seed</PackageTags>
-	<FileVersion>4.1.1</FileVersion>
-	<AssemblyVersion>4.1.1</AssemblyVersion>
+	<FileVersion>5.0.0</FileVersion>
+	<AssemblyVersion>5.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cadmus.Seed" Version="4.2.3" />
+    <PackageReference Include="Cadmus.Seed" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
