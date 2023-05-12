@@ -6,6 +6,7 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
 
 - [Cadmus.Philology.Parts](#cadmusphilologyparts)
   - [History](#history)
+    - [6.0.2](#602)
     - [6.0.1](#601)
     - [5.0.0](#500)
     - [4.1.1](#411)
@@ -16,6 +17,10 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
     - [3.0.0](#300)
 
 ## History
+
+### 6.0.2
+
+- 2023-05-11: updated packages.
 
 ### 6.0.1
 
