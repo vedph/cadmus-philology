@@ -4,19 +4,11 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
 
 👀 [Cadmus Page](https://myrmex.github.io/overview/cadmus/)
 
-- [Cadmus.Philology.Parts](#cadmusphilologyparts)
-  - [History](#history)
-    - [6.0.2](#602)
-    - [6.0.1](#601)
-    - [5.0.0](#500)
-    - [4.1.1](#411)
-    - [4.1.0](#410)
-    - [4.0.2](#402)
-    - [4.0.1](#401)
-    - [4.0.0](#400)
-    - [3.0.0](#300)
-
 ## History
+
+### 7.0.0
+
+- 2023-05-23: updated packages with breaking changes for general parts (introduced [AssertedCompositeId](https://github.com/vedph/cadmus-bricks-shell/blob/master/projects/myrmidon/cadmus-refs-asserted-ids/README.md#asserted-composite-id)).
 
 ### 6.0.2
 
