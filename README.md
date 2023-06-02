@@ -6,6 +6,10 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
 
 ## History
 
+### 7.0.1
+
+- 2023-06-02: updated packages.
+
 ### 7.0.0
 
 - 2023-05-23: updated packages with breaking changes for general parts (introduced [AssertedCompositeId](https://github.com/vedph/cadmus-bricks-shell/blob/master/projects/myrmidon/cadmus-refs-asserted-ids/README.md#asserted-composite-id)).
