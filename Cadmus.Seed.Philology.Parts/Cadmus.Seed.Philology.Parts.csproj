@@ -5,7 +5,7 @@
 	<Nullable>enable</Nullable>
     <IncludeSymbols>true</IncludeSymbols>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	<Version>7.0.1</Version>
+	<Version>7.0.2</Version>
 	<Authors>Daniele Fusi</Authors>
 	<Company>Fusi</Company>
 	<Product>Cadmus</Product>
@@ -14,12 +14,12 @@
 	<Copyright>By Daniele Fusi</Copyright>
 	<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 	<PackageTags>Cadmus;seed</PackageTags>
-	<FileVersion>7.0.1</FileVersion>
-	<AssemblyVersion>7.0.1</AssemblyVersion>
+	<FileVersion>7.0.2</FileVersion>
+	<AssemblyVersion>7.0.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cadmus.Seed" Version="6.1.0" />
+    <PackageReference Include="Cadmus.Seed" Version="6.1.4" />
   </ItemGroup>
 
   <ItemGroup>
