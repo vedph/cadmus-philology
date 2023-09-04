@@ -11,16 +11,16 @@
 	  <Description>Philological parts for Cadmus.</Description>
 	  <Copyright>by Daniele Fusi 2022</Copyright>
 	  <NeutralLanguage>en-US</NeutralLanguage>
-	  <Version>7.0.2</Version>
+	  <Version>7.0.3</Version>
 	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 	  <PackageTags>Cadmus;philology parts</PackageTags>
-	  <FileVersion>7.0.2</FileVersion>
-	  <AssemblyVersion>7.0.2</AssemblyVersion>
+	  <FileVersion>7.0.3</FileVersion>
+	  <AssemblyVersion>7.0.3</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="DiffMatchPatch" Version="2.0.0" />
-	<PackageReference Include="Cadmus.Core" Version="6.1.4" />
+	<PackageReference Include="Cadmus.Core" Version="6.1.16" />
 	<PackageReference Include="Cadmus.Refs.Bricks" Version="4.0.1" />
   </ItemGroup>
 

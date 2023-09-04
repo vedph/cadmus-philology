@@ -6,6 +6,10 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
 
 ## History
 
+### 7.0.3
+
+- 2023-09-04: updated packages.
+
 ### 7.0.2
 
 - 2023-06-16: updated packages.
