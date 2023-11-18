@@ -6,6 +6,10 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
 
 ## History
 
+### 8.0.1
+
+- 2023-11-18: ⚠️ Upgraded to .NET 8.
+
 ### 7.0.3
 
 - 2023-09-04: updated packages.
