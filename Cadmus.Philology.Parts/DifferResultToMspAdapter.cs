@@ -130,7 +130,7 @@ public sealed class DifferResultToMspAdapter :
     /// <exception cref="ArgumentNullException">result</exception>
     public IList<MspOperation> Adapt(IList<Diff> result)
     {
-        if (result == null) throw new ArgumentNullException(nameof(result));
+        ArgumentNullException.ThrowIfNull(result);
 
         List<Tuple<Diff, MspOperation?>> mspDiffs = new();
 

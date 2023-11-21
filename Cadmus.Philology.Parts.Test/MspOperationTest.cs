@@ -12,7 +12,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "@2×3= [tag]")]
     [InlineData(null, "note", "@2×3= {note}")]
     [InlineData("tag", "note", "@2×3= [tag] {note}")]
-    public void ToString_Delete_Ok(string tag, string note, string expected)
+    public void ToString_Delete_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -29,7 +29,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "\"old\"@2×3= [tag]")]
     [InlineData(null, "note", "\"old\"@2×3= {note}")]
     [InlineData("tag", "note", "\"old\"@2×3= [tag] {note}")]
-    public void ToString_DeleteWithValueA_Ok(string tag, string note, string expected)
+    public void ToString_DeleteWithValueA_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -47,7 +47,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "@2×3=\"new\" [tag]")]
     [InlineData(null, "note", "@2×3=\"new\" {note}")]
     [InlineData("tag", "note", "@2×3=\"new\" [tag] {note}")]
-    public void ToString_Replace_Ok(string tag, string note, string expected)
+    public void ToString_Replace_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -65,7 +65,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "\"old\"@2×3=\"new\" [tag]")]
     [InlineData(null, "note", "\"old\"@2×3=\"new\" {note}")]
     [InlineData("tag", "note", "\"old\"@2×3=\"new\" [tag] {note}")]
-    public void ToString_ReplaceWithValueA_Ok(string tag, string note, string expected)
+    public void ToString_ReplaceWithValueA_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -84,7 +84,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "@2×0=\"new\" [tag]")]
     [InlineData(null, "note", "@2×0=\"new\" {note}")]
     [InlineData("tag", "note", "@2×0=\"new\" [tag] {note}")]
-    public void ToString_Insert_Ok(string tag, string note, string expected)
+    public void ToString_Insert_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -102,7 +102,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "@2×3>@6×0 [tag]")]
     [InlineData(null, "note", "@2×3>@6×0 {note}")]
     [InlineData("tag", "note", "@2×3>@6×0 [tag] {note}")]
-    public void ToString_Move_Ok(string tag, string note, string expected)
+    public void ToString_Move_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -120,7 +120,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "\"old\"@2×3>@6×0 [tag]")]
     [InlineData(null, "note", "\"old\"@2×3>@6×0 {note}")]
     [InlineData("tag", "note", "\"old\"@2×3>@6×0 [tag] {note}")]
-    public void ToString_MoveWithValueA_Ok(string tag, string note, string expected)
+    public void ToString_MoveWithValueA_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -139,7 +139,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "@2×3~@6×3 [tag]")]
     [InlineData(null, "note", "@2×3~@6×3 {note}")]
     [InlineData("tag", "note", "@2×3~@6×3 [tag] {note}")]
-    public void ToString_Swap_Ok(string tag, string note, string expected)
+    public void ToString_Swap_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -157,7 +157,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null, "\"old\"@2×3~\"new\"@6×3 [tag]")]
     [InlineData(null, "note", "\"old\"@2×3~\"new\"@6×3 {note}")]
     [InlineData("tag", "note", "\"old\"@2×3~\"new\"@6×3 [tag] {note}")]
-    public void ToString_SwapWithValuesAB_Ok(string tag, string note, string expected)
+    public void ToString_SwapWithValuesAB_Ok(string? tag, string? note, string expected)
     {
         MspOperation op = new()
         {
@@ -195,7 +195,7 @@ public sealed class MspOperationTest
         Assert.Null(op);
     }
 
-    private static string AppendTagAndNote(string op, string tag, string note)
+    private static string AppendTagAndNote(string op, string? tag, string? note)
     {
         StringBuilder sb = new(op);
         if (tag != null) sb.Append(" [").Append(tag).Append(']');
@@ -208,7 +208,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_Delete_Ok(string tag, string note)
+    public void Parse_Delete_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("@2x1=", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -232,7 +232,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_DeleteWithEmptyValueB_Ok(string tag, string note)
+    public void Parse_DeleteWithEmptyValueB_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("@2x1=\"\"", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -256,7 +256,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_DeleteWithValueA_Ok(string tag, string note)
+    public void Parse_DeleteWithValueA_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("\"a\"@2x1=", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -281,7 +281,7 @@ public sealed class MspOperationTest
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
 
-    public void Parse_Insert_Ok(string tag, string note)
+    public void Parse_Insert_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("@2x0=\"s\"", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -305,7 +305,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_Replace_Ok(string tag, string note)
+    public void Parse_Replace_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("@2x1=\"b\"", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -329,7 +329,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_ReplaceWithValueA_Ok(string tag, string note)
+    public void Parse_ReplaceWithValueA_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("\"a\"@2x1=\"b\"", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -353,7 +353,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_Move_Ok(string tag, string note)
+    public void Parse_Move_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("@2x1>@4", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -377,7 +377,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_MoveWithValueA_Ok(string tag, string note)
+    public void Parse_MoveWithValueA_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("\"a\"@2x1>@4", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -401,7 +401,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_Swap_Ok(string tag, string note)
+    public void Parse_Swap_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("@2x1~@4x1", tag, note);
         MspOperation? op = MspOperation.Parse(text);
@@ -425,7 +425,7 @@ public sealed class MspOperationTest
     [InlineData("tag", null)]
     [InlineData(null, "note")]
     [InlineData("tag", "note")]
-    public void Parse_SwapWithValuesAB_Ok(string tag, string note)
+    public void Parse_SwapWithValuesAB_Ok(string? tag, string? note)
     {
         string text = AppendTagAndNote("\"a\"@2x1~\"b\"@4x1", tag, note);
         MspOperation? op = MspOperation.Parse(text);

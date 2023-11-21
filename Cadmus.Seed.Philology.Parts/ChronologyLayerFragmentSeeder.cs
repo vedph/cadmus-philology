@@ -58,12 +58,9 @@ public sealed class ChronologyLayerFragmentSeeder : FragmentSeederBase,
     public override ITextLayerFragment? GetFragment(
         IItem item, string location, string baseText)
     {
-        if (item == null)
-            throw new ArgumentNullException(nameof(item));
-        if (location == null)
-            throw new ArgumentNullException(nameof(location));
-        if (baseText == null)
-            throw new ArgumentNullException(nameof(baseText));
+        ArgumentNullException.ThrowIfNull(item);
+        ArgumentNullException.ThrowIfNull(location);
+        ArgumentNullException.ThrowIfNull(baseText);
 
         Faker f = new();
         return new ChronologyLayerFragment

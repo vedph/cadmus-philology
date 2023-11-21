@@ -18,7 +18,7 @@ static internal class TestHelper
 {
     static public string LoadResourceText(string name)
     {
-        if (name == null) throw new ArgumentNullException(nameof(name));
+        ArgumentNullException.ThrowIfNull(name);
 
         using StreamReader reader = new(
             Assembly.GetExecutingAssembly().GetManifestResourceStream(
