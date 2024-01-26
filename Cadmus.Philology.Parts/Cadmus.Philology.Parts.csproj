@@ -11,11 +11,11 @@
 	  <Description>Philological parts for Cadmus.</Description>
 	  <Copyright>by Daniele Fusi 2022</Copyright>
 	  <NeutralLanguage>en-US</NeutralLanguage>
-	  <Version>8.0.2</Version>
+	  <Version>8.1.0</Version>
 	  <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 	  <PackageTags>Cadmus;philology parts</PackageTags>
-	  <FileVersion>8.0.2</FileVersion>
-	  <AssemblyVersion>8.0.2</AssemblyVersion>
+	  <FileVersion>8.1.0</FileVersion>
+	  <AssemblyVersion>8.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

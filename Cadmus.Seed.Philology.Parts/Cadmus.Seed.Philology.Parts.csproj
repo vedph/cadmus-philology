@@ -5,7 +5,7 @@
 	<Nullable>enable</Nullable>
     <IncludeSymbols>true</IncludeSymbols>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	<Version>8.0.2</Version>
+	<Version>8.1.0</Version>
 	<Authors>Daniele Fusi</Authors>
 	<Company>Fusi</Company>
 	<Product>Cadmus</Product>
@@ -14,8 +14,8 @@
 	<Copyright>By Daniele Fusi</Copyright>
 	<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 	<PackageTags>Cadmus;seed</PackageTags>
-	<FileVersion>8.0.2</FileVersion>
-	<AssemblyVersion>8.0.2</AssemblyVersion>
+	<FileVersion>8.1.0</FileVersion>
+	<AssemblyVersion>8.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

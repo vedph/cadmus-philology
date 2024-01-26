@@ -6,6 +6,18 @@ This solution contains the Cadmus philologic parts library derived from `Cadmus.
 
 ## History
 
+### 8.1.0
+
+- 2024-01-26: removed obsolete ligatures fragment model. For ligatures, use `EpiLigaturesLayerFragment`. The legacy fragment came from a limited project and used Manzella 1987 149-151:
+	- `ligature`: generic ligature: a shared trait among several letters.
+	- `inversion`: standard nexus with inversion of a letter for graphical commodity: e.g.`PR` where P is horizontally flipped so that its vertical trait can be shared with `R`.
+	- `overlap`: letters parts overlap like `DO` where the right part of `D` and the left part of `O` cross each other, or `AV` where `V` is vertically flipped and overlapped to `A`.
+	- `replacement`: a trait is shared with another letter replacing the other letter's trait which would be graphically unfit: e.g. `OE` where the curve of `O` also hosts the horizontal traits of `E`, replacing the `E`'s vertical trait.
+	- `graft`: a letter continues the tracing of another letter, like `I` which in `CI` continues the topright terminal point of `C` somewhat like a vertically flipped `G`.
+	- `inclusion`: improperly considered a nexus: a letter is smaller and placed inside another letter, like `O` in `C` and `I` in `G` of the word `CONIUGI`.
+	- `connection`: letters are connected via additional traits not belonging to any letter.
+	- `complex`: any complex combination of the other types.
+
 ### 8.0.2
 
 - 2023-11-21: updated packages.
