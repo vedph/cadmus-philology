@@ -12,7 +12,11 @@ This solution contains the Cadmus philologic parts library.
 
 ## History
 
-- 2024-02-01: documentation.
+### 8.2.0
+
+- 2024-02-01:
+  - documentation.
+  - moved `ChronologyLayerFragment` to `Cadmus.General.Parts`.
 
 ### 8.1.1
 
