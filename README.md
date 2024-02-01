@@ -1,10 +1,18 @@
 # Cadmus.Philology.Parts
 
-This solution contains the Cadmus philologic parts library derived from `Cadmus.Philology.Parts` in the core Cadmus solution, in the context of the general refactoring towards a more streamlined and modular system. The library includes all the old parts with no additions or modifications. No part or fragment ID has been changed.
-
 👀 [Cadmus Page](https://myrmex.github.io/overview/cadmus/)
 
+This solution contains the Cadmus philologic parts library.
+
+- fragments:
+  - [apparatus](docs/fr.apparatus.md)
+  - [orthography](docs/fr.orthography.md)
+  - [quotations](docs/fr.quotations.md)
+  - [witnesses](docs/fr.witnesses.md)
+
 ## History
+
+- 2024-02-01: documentation.
 
 ### 8.1.1
 
