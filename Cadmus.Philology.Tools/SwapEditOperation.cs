@@ -1,17 +1,31 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Cadmus.Philology.Tools;
 
-public class SwapEditOperation : EditOperation
+/// <summary>
+/// Swap edit operation.
+/// </summary>
+public sealed class SwapEditOperation : EditOperation
 {
     public override OperationType Type => OperationType.Swap;
     public int SecondPosition { get; set; }
     public int SecondLength { get; set; } = 1;
     public string? SecondInputText { get; set; }
 
+    /// <summary>
+    /// Executes the swap operation on the given input string.
+    /// </summary>
+    /// <param name="input">The input string to modify.</param>
+    /// <returns>The modified string after the swap operation.</returns>
+    /// <exception cref="ArgumentNullException">input</exception>
+    /// <exception cref="ArgumentException">Thrown when positions are invalid
+    /// or overlap.</exception>
     public override string Execute(string input)
     {
+        ArgumentNullException.ThrowIfNull(input);
+
         ValidatePosition(input, Position, Length);
         ValidatePosition(input, SecondPosition, SecondLength);
 
@@ -26,7 +40,7 @@ public class SwapEditOperation : EditOperation
 
         StringBuilder result = new(input);
 
-        // Replace in order of highest position first to avoid index shifting
+        // replace in order of highest position first to avoid index shifting
         if (Position > SecondPosition)
         {
             result.Remove(Position - 1, Length);
@@ -45,11 +59,17 @@ public class SwapEditOperation : EditOperation
         return result.ToString();
     }
 
+    /// <summary>
+    /// Parses the specified text to initialize the swap operation.
+    /// </summary>
+    /// <param name="text">The text to parse.</param>
+    /// <exception cref="ArgumentNullException">text</exception>
+    /// <exception cref="ParseException">Thrown when the text format is invalid.</exception>
     public override void Parse(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        // Pattern: "A"@NxN<>"B"@MxM or @NxN<>@MxM
+        // pattern: "A"@NxN<>"B"@MxM or @NxN<>@MxM
         string pattern = @"(?:""([^""]*)"")?\s*@(\d+)(?:[x×](\d+))?\s*<>\s*(?:""([^""]*)"")?\s*@(\d+)(?:[x×](\d+))?";
         Match match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
 

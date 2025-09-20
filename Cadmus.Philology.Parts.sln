@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cadmus.Philology.Tools", "Cadmus.Philology.Tools\Cadmus.Philology.Tools.csproj", "{E3D8C83B-317D-4F79-94F5-E026EE9B6FA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cadmus.Philology.Tools.Test", "Cadmus.Philology.Tools.Test\Cadmus.Philology.Tools.Test.csproj", "{844423FB-AE4C-4517-ABBF-81B8ADE7C296}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{E3D8C83B-317D-4F79-94F5-E026EE9B6FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D8C83B-317D-4F79-94F5-E026EE9B6FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D8C83B-317D-4F79-94F5-E026EE9B6FA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{844423FB-AE4C-4517-ABBF-81B8ADE7C296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{844423FB-AE4C-4517-ABBF-81B8ADE7C296}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{844423FB-AE4C-4517-ABBF-81B8ADE7C296}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{844423FB-AE4C-4517-ABBF-81B8ADE7C296}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,13 +1,29 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Cadmus.Philology.Tools;
 
+/// <summary>
+/// Replace edit operation.
+/// </summary>
 public class ReplaceEditOperation : EditOperation
 {
+    /// <summary>
+    /// Gets the type of operation.
+    /// </summary>
     public override OperationType Type => OperationType.Replace;
+
+    /// <summary>
+    /// Gets or sets the replacement text.
+    /// </summary>
     public string ReplacementText { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Executes the operation on the given input text.
+    /// </summary>
+    /// <param name="input">The input text.</param>
+    /// <returns>The text after the operation has been applied.</returns>
     public override string Execute(string input)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -19,6 +35,12 @@ public class ReplaceEditOperation : EditOperation
         return result.ToString();
     }
 
+    /// <summary>
+    /// Parses the specified text to populate the object's properties.
+    /// </summary>
+    /// <param name="text">The text to parse.</param>
+    /// <exception cref="ArgumentNullException">text</exception>
+    /// <exception cref="ParseException">Invalid format</exception>
     public override void Parse(string text)
     {
         ArgumentNullException.ThrowIfNull(text);

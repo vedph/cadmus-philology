@@ -1,4 +1,6 @@
-﻿namespace Cadmus.Philology.Tools;
+﻿using System;
+
+namespace Cadmus.Philology.Tools;
 
 /// <summary>
 /// A parsing exception.
