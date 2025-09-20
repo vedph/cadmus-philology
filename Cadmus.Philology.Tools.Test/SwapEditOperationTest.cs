@@ -95,7 +95,7 @@ public sealed class SwapEditOperationTest
         Assert.Equal("abc", op.InputText);
         Assert.Equal(2, op.At);
         Assert.Equal(2, op.Run);
-        Assert.Equal("def", op.Text2);
+        Assert.Equal("def", op.InputText2);
         Assert.Equal(5, op.At2);
         Assert.Equal(2, op.Run2);
     }
@@ -109,7 +109,7 @@ public sealed class SwapEditOperationTest
         Assert.Null(op.InputText);
         Assert.Equal(2, op.At);
         Assert.Equal(1, op.Run);
-        Assert.Null(op.Text2);
+        Assert.Null(op.InputText2);
         Assert.Equal(4, op.At2);
         Assert.Equal(1, op.Run2);
     }
@@ -123,7 +123,7 @@ public sealed class SwapEditOperationTest
         Assert.Null(op.InputText);
         Assert.Equal(2, op.At);
         Assert.Equal(2, op.Run);
-        Assert.Null(op.Text2);
+        Assert.Null(op.InputText2);
         Assert.Equal(5, op.At2);
         Assert.Equal(2, op.Run2);
     }
@@ -137,7 +137,7 @@ public sealed class SwapEditOperationTest
         Assert.Null(op.InputText);
         Assert.Equal(2, op.At);
         Assert.Equal(2, op.Run);
-        Assert.Null(op.Text2);
+        Assert.Null(op.InputText2);
         Assert.Equal(5, op.At2);
         Assert.Equal(2, op.Run2);
     }
@@ -201,7 +201,7 @@ public sealed class SwapEditOperationTest
             InputText = "abc",
             At = 2,
             Run = 2,
-            Text2 = "def",
+            InputText2 = "def",
             At2 = 5,
             Run2 = 2,
             Note = "note"

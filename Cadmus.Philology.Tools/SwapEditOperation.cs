@@ -25,9 +25,9 @@ public sealed class SwapEditOperation : EditOperation
     public int Run2 { get; set; } = 1;
 
     /// <summary>
-    /// The optional text associated with the second substring.
+    /// The optional input text associated with the second substring.
     /// </summary>
-    public string? Text2 { get; set; }
+    public string? InputText2 { get; set; }
 
     /// <summary>
     /// Executes the swap operation on the given input string.
@@ -116,7 +116,7 @@ public sealed class SwapEditOperation : EditOperation
             Run = length;
         }
 
-        Text2 = match.Groups[4].Success ? match.Groups[4].Value : null;
+        InputText2 = match.Groups[4].Success ? match.Groups[4].Value : null;
 
         if (!int.TryParse(match.Groups[5].Value, out int secondPosition) ||
             secondPosition < 1)
@@ -155,7 +155,7 @@ public sealed class SwapEditOperation : EditOperation
         if (Run > 1) sb.Append($"x{Run}");
         sb.Append("<>");
 
-        if (!string.IsNullOrEmpty(Text2)) sb.Append($"\"{Text2}\"");
+        if (!string.IsNullOrEmpty(InputText2)) sb.Append($"\"{InputText2}\"");
 
         sb.Append($"@{At2}");
         if (Run2 > 1) sb.Append($"x{Run2}");
