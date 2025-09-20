@@ -101,7 +101,7 @@ public sealed class OrthographyLayerFragmentSeeder : FragmentSeederBase,
 public sealed class OrthographyLayerFragmentSeederOptions
 {
     /// <summary>
-    /// The optional tags to randomaly assign to msp operations.
+    /// The optional tags to randomly assign to msp operations.
     /// Leave this null to avoid assigning tags.
     /// </summary>
     public IList<string>? Tags { get; set; }

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Cadmus.Core;
 using Cadmus.Core.Layers;
+using Cadmus.Philology.Tools;
 using Fusi.Tools.Configuration;
 
 namespace Cadmus.Philology.Parts;
@@ -27,7 +29,7 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     /// simple token-based coordinates system (e.g. 1.2=second token of
     /// first block), or a more complex system like an XPath expression.
     /// </remarks>
-    public string Location { get; set; }
+    public string Location { get; set; } = "";
 
     /// <summary>
     /// Gets or sets the standard orthography form for the word linked to
@@ -36,21 +38,35 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     public string? Standard { get; set; }
 
     /// <summary>
+    /// A generic tag to classify or group fragments.
+    /// </summary>
+    public string? Tag { get; set; }
+
+    /// <summary>
+    /// A generic free text note.
+    /// </summary>
+    public string? Note { get; set; }
+
+    /// <summary>
     /// Gets or sets the operations describing the relationship between the
     /// <see cref="Standard"/> form and the orthographically deviated form.
     /// Each operation is a text representing a <see cref="MspOperation"/>,
     /// to be parsed by <see cref="MspOperation.Parse(string)"/>.
     /// </summary>
-    public List<string> Operations { get; set; }
+    public List<string> Operations { get; set; } = [];
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OrthographyLayerFragment"/>
-    /// class.
-    /// </summary>
-    public OrthographyLayerFragment()
+    private List<EditOperation> ParseOperations()
     {
-        Location = "";
-        Operations = new List<string>();
+        List<EditOperation> operations = [];
+        try
+        {
+            foreach (string text in Operations)
+                operations.Add(EditOperation.ParseOperation(text));
+        }
+        catch (Exception)
+        {
+        }
+        return operations;
     }
 
     /// <summary>
@@ -72,24 +88,32 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     /// <returns>The pins.</returns>
     public IEnumerable<DataPin> GetDataPins(IItem? item = null)
     {
-        List<DataPin> pins = new();
+        List<DataPin> pins = [];
 
-        if (Operations?.Count > 0)
+        // parse operations to extract pins data
+        List<EditOperation> operations = ParseOperations();
+
+        if (operations?.Count > 0)
         {
-            var groups = from s in Operations
-                         let o = MspOperation.Parse(s)
-                         where o?.Tag != null
-                         group o by o.Tag
-                into g
-                         select g;
+            HashSet<string> tags = [];
+            Dictionary<string, int> counts = [];
+            foreach (var operation in operations)
+            {
+                foreach (string tag in operation.Tags)
+                {
+                    tags.Add(tag);
+                    if (!counts.TryGetValue(tag, out int value)) counts[tag] = 1;
+                    else counts[tag] = ++value;
+                }
+            }
 
             pins.AddRange(
-                from g in groups
-                orderby g.Key
+                from tag in tags
+                orderby tag
                 select new DataPin
                 {
-                    Name = PartBase.FR_PREFIX + $"msp-{g.Key}-count",
-                    Value = g.Count().ToString(CultureInfo.InvariantCulture)
+                    Name = PartBase.FR_PREFIX + $"msp-{tag}-count",
+                    Value = $"{counts[tag]}"
                 });
         }
 
@@ -105,11 +129,12 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
                 .GetCustomAttribute<TagAttribute>()!;
             Regex roleIdRegex = new("^" + attr.Tag + "(?::.+)?$");
 
-            IHasFragments<OrthographyLayerFragment>? layerPart =
-                item.Parts.Find(p => p.RoleId != null
+            if (item.Parts.Find(p => p.RoleId != null
                     && roleIdRegex.IsMatch(p.RoleId))
-                as IHasFragments<OrthographyLayerFragment>;
-            if (layerPart == null) return pins;
+                is not IHasFragments<OrthographyLayerFragment> layerPart)
+            {
+                return pins;
+            }
 
             string? baseText = layerPart.GetTextAt(textPart, Location);
             if (baseText != null)
@@ -136,8 +161,8 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     /// <returns>Data pins definitions.</returns>
     public IList<DataPinDefinition> GetDataPinDefinitions()
     {
-        return new List<DataPinDefinition>(new[]
-        {
+        return new List<DataPinDefinition>(
+        [
             new DataPinDefinition(DataPinValueType.Integer,
                 PartBase.FR_PREFIX + "msp-{TAG}-count",
                 "The count of each type of misspelling operations."),
@@ -147,7 +172,7 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
             new DataPinDefinition(DataPinValueType.String,
                 PartBase.FR_PREFIX + "orth-std",
                 "The standard orthography from the fragment."),
-        });
+        ]);
     }
 
     /// <summary>

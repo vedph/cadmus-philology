@@ -60,12 +60,7 @@ public sealed class OrthographyLayerFragmentSeederTest
         seeder.SetSeedOptions(_seedOptions);
         seeder.Configure(new OrthographyLayerFragmentSeederOptions
         {
-            Tags = new[]
-            {
-                "alpha",
-                "beta",
-                "gamma"
-            }
+            Tags = [ "A", "B", "C" ]
         });
 
         ITextLayerFragment? fragment = seeder.GetFragment(_item, "1.1", "alpha");

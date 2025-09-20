@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-	<Nullable>enable</Nullable>
-    <IncludeSymbols>true</IncludeSymbols>
-	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	<Version>9.0.3</Version>
-	<Authors>Daniele Fusi</Authors>
-	<Company>Fusi</Company>
-	<Product>Cadmus</Product>
-	<NeutralLanguage>en-US</NeutralLanguage>
-	<Description>Cadmus philology parts seeders.</Description>
-	<Copyright>By Daniele Fusi</Copyright>
-	<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-	<PackageTags>Cadmus;seed</PackageTags>
-	<FileVersion>9.0.3</FileVersion>
-	<AssemblyVersion>9.0.3</AssemblyVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Authors>Daniele Fusi</Authors>
+		<Company>Fusi</Company>
+		<Product>Cadmus</Product>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Description>Cadmus philology parts seeders.</Description>
+		<Copyright>By Daniele Fusi</Copyright>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<PackageTags>Cadmus;seed</PackageTags>
+		<Version>10.0.0</Version>
+		<FileVersion>10.0.0</FileVersion>
+		<AssemblyVersion>10.0.0</AssemblyVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Cadmus.Seed" Version="8.0.10" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Cadmus.Seed" Version="8.0.10" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Cadmus.Philology.Parts\Cadmus.Philology.Parts.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Cadmus.Philology.Parts\Cadmus.Philology.Parts.csproj" />
+	</ItemGroup>
 
 </Project>
