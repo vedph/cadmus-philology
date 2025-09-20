@@ -66,7 +66,8 @@ public sealed class ReplaceEditOperation : EditOperation
 
         if (!int.TryParse(match.Groups[2].Value, out int position) || position < 1)
         {
-            throw new ParseException("Position must be a positive integer", match.Groups[2].Value);
+            throw new ParseException("Position must be a positive integer",
+                match.Groups[2].Value);
         }
         At = position;
 
@@ -75,7 +76,8 @@ public sealed class ReplaceEditOperation : EditOperation
         {
             if (!int.TryParse(match.Groups[3].Value, out int length) || length < 1)
             {
-                throw new ParseException("Length must be a positive integer", match.Groups[3].Value);
+                throw new ParseException("Length must be a positive integer",
+                    match.Groups[3].Value);
             }
             Run = length;
         }
