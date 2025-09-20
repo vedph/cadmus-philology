@@ -43,16 +43,34 @@ public sealed class InsertAfterEditOperation : EditOperation
         return input.Insert(Position, Text);
     }
 
-    public override void Parse(string dslText)
+    /// <summary>
+    /// Parses the specified text to extract the position and text for an
+    /// insert-after operation.
+    /// </summary>
+    /// <remarks>This method extracts the position and text from the input
+    /// string and assigns them to the <see cref="Position"/> and
+    /// <see cref="Text"/> properties, respectively. It also processes 
+    /// additional notes and tags using the <c>ParseNoteAndTags</c> method.
+    /// </remarks>
+    /// <param name="text">The input string to parse. The string must follow
+    /// the format <c>@position=+"text"</c>, where <c>position</c> is a
+    /// non-negative integer and  <c>text</c> is the content to insert.</param>
+    /// <exception cref="ParseException">Thrown if the input string does not
+    /// match the expected format, if the position is not a non-negative integer,
+    /// or if other parsing errors occur.</exception>
+    /// <exception cref="ArgumentNullException">text</exception>"
+    public override void Parse(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
+
         // pattern: @N=+"B"
         string pattern = @"@(\d+)\s*=\+\s*""([^""]*)""";
-        Match match = Regex.Match(dslText, pattern, RegexOptions.IgnoreCase);
+        Match match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
 
         if (!match.Success)
         {
             throw new ParseException("Invalid insert-after operation format. " +
-                "Expected: @position=+\"text\"", dslText);
+                "Expected: @position=+\"text\"", text);
         }
 
         if (!int.TryParse(match.Groups[1].Value, out int position) || position < 0)
@@ -63,9 +81,13 @@ public sealed class InsertAfterEditOperation : EditOperation
         Position = position;
 
         Text = match.Groups[2].Value;
-        ParseNoteAndTags(dslText);
+        ParseNoteAndTags(text);
     }
 
+    /// <summary>
+    /// Returns a parsable string representation of the object.
+    /// </summary>
+    /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
         StringBuilder sb = new();

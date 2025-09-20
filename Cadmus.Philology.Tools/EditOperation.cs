@@ -357,7 +357,7 @@ public abstract class EditOperation
                     InsertBeforeEditOperation insert = new()
                     {
                         Position = currentPosition,
-                        ReplacementText = insertedText,
+                        Text = insertedText,
                         InputText = includeInputText ? "" : null
                     };
                     operations.Add(insert);

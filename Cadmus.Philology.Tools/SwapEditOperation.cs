@@ -24,7 +24,7 @@ public class SwapEditOperation : EditOperation
         string firstText = input.Substring(Position - 1, Length);
         string secondText = input.Substring(SecondPosition - 1, SecondLength);
 
-        StringBuilder result = new StringBuilder(input);
+        StringBuilder result = new(input);
 
         // Replace in order of highest position first to avoid index shifting
         if (Position > SecondPosition)
@@ -45,15 +45,17 @@ public class SwapEditOperation : EditOperation
         return result.ToString();
     }
 
-    public override void Parse(string dslText)
+    public override void Parse(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
+
         // Pattern: "A"@NxN<>"B"@MxM or @NxN<>@MxM
         string pattern = @"(?:""([^""]*)"")?\s*@(\d+)(?:[x×](\d+))?\s*<>\s*(?:""([^""]*)"")?\s*@(\d+)(?:[x×](\d+))?";
-        Match match = Regex.Match(dslText, pattern, RegexOptions.IgnoreCase);
+        Match match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
 
         if (!match.Success)
         {
-            throw new ParseException("Invalid swap operation format. Expected: \"text1\"@position1<>\"text2\"@position2", dslText);
+            throw new ParseException("Invalid swap operation format. Expected: \"text1\"@position1<>\"text2\"@position2", text);
         }
 
         InputText = match.Groups[1].Success ? match.Groups[1].Value : null;
@@ -92,33 +94,32 @@ public class SwapEditOperation : EditOperation
             SecondLength = secondLength;
         }
 
-        ParseNoteAndTags(dslText);
+        ParseNoteAndTags(text);
     }
 
+    /// <summary>
+    /// Returns a parsable string representation of the object.
+    /// </summary>
+    /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
 
-        if (!string.IsNullOrEmpty(InputText))
-            sb.Append($"\"{InputText}\"");
+        if (!string.IsNullOrEmpty(InputText)) sb.Append($"\"{InputText}\"");
 
         sb.Append($"@{Position}");
-        if (Length > 1)
-            sb.Append($"x{Length}");
+        if (Length > 1) sb.Append($"x{Length}");
         sb.Append("<>");
 
         if (!string.IsNullOrEmpty(SecondInputText))
             sb.Append($"\"{SecondInputText}\"");
 
         sb.Append($"@{SecondPosition}");
-        if (SecondLength > 1)
-            sb.Append($"x{SecondLength}");
+        if (SecondLength > 1) sb.Append($"x{SecondLength}");
 
-        if (!string.IsNullOrEmpty(Note))
-            sb.Append($" ({Note})");
+        if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
 
-        if (Tags.Any())
-            sb.Append($" [{string.Join(" ", Tags)}]");
+        if (Tags.Count > 0) sb.Append($" [{string.Join(" ", Tags)}]");
 
         return sb.ToString();
     }
