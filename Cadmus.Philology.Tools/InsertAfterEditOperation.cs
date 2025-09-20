@@ -38,10 +38,10 @@ public sealed class InsertAfterEditOperation : EditOperation
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        if (Position == 0) return input + Text;
+        if (At == 0) return input + Text;
 
-        ValidatePosition(input, Position);
-        return input.Insert(Position, Text);
+        ValidatePosition(input, At);
+        return input.Insert(At, Text);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public sealed class InsertAfterEditOperation : EditOperation
             throw new ParseException("Position must be a non-negative integer", 
                 match.Groups[1].Value);
         }
-        Position = position;
+        At = position;
 
         Text = match.Groups[2].Value;
         ParseNoteAndTags(text);
@@ -92,7 +92,7 @@ public sealed class InsertAfterEditOperation : EditOperation
     public override string ToString()
     {
         StringBuilder sb = new();
-        sb.Append($"@{Position}=+\"{Text}\"");
+        sb.Append($"@{At}=+\"{Text}\"");
 
         if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
 

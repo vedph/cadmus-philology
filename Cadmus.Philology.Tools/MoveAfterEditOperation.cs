@@ -25,7 +25,7 @@ public sealed class MoveAfterEditOperation : EditOperation
     /// <summary>
     /// Gets or sets the target position for the operation.
     /// </summary>
-    public int TargetPosition { get; set; }
+    public int To { get; set; }
 
     /// <summary>
     /// Moves a specified substring within the input string to a new position.
@@ -46,18 +46,18 @@ public sealed class MoveAfterEditOperation : EditOperation
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        ValidatePosition(input, Position, Length);
-        ValidatePosition(input, TargetPosition);
+        ValidatePosition(input, At, Run);
+        ValidatePosition(input, To);
 
-        string textToMove = input.Substring(Position - 1, Length);
+        string textToMove = input.Substring(At - 1, Run);
         StringBuilder result = new(input);
 
         // remove the text first
-        result.Remove(Position - 1, Length);
+        result.Remove(At - 1, Run);
 
         // adjust target position if it's after the removed text
-        int adjustedTargetPosition = TargetPosition;
-        if (TargetPosition > Position) adjustedTargetPosition -= Length;
+        int adjustedTargetPosition = To;
+        if (To > At) adjustedTargetPosition -= Run;
 
         // insert after target position
         result.Insert(adjustedTargetPosition, textToMove);
@@ -107,9 +107,9 @@ public sealed class MoveAfterEditOperation : EditOperation
             throw new ParseException("Position must be a positive integer", 
                 match.Groups[2].Value);
         }
-        Position = position;
+        At = position;
 
-        Length = 1;
+        Run = 1;
         if (match.Groups[3].Success)
         {
             if (!int.TryParse(match.Groups[3].Value, out int length) || length < 1)
@@ -117,7 +117,7 @@ public sealed class MoveAfterEditOperation : EditOperation
                 throw new ParseException("Length must be a positive integer", 
                     match.Groups[3].Value);
             }
-            Length = length;
+            Run = length;
         }
 
         if (!int.TryParse(match.Groups[4].Value, out int targetPosition)
@@ -126,7 +126,7 @@ public sealed class MoveAfterEditOperation : EditOperation
             throw new ParseException("Target position must be a positive " +
                 "integer", match.Groups[4].Value);
         }
-        TargetPosition = targetPosition;
+        To = targetPosition;
 
         ParseNoteAndTags(text);
     }
@@ -141,9 +141,9 @@ public sealed class MoveAfterEditOperation : EditOperation
 
         if (!string.IsNullOrEmpty(InputText)) sb.Append($"\"{InputText}\"");
 
-        sb.Append($"@{Position}");
-        if (Length > 1) sb.Append($"x{Length}");
-        sb.Append($"->@{TargetPosition}");
+        sb.Append($"@{At}");
+        if (Run > 1) sb.Append($"x{Run}");
+        sb.Append($"->@{To}");
 
         if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
 

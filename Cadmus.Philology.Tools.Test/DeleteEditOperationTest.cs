@@ -83,8 +83,8 @@ public sealed class DeleteEditOperationTest
         op.Parse("\"abc\"@2!");
 
         Assert.Equal("abc", op.InputText);
-        Assert.Equal(2, op.Position);
-        Assert.Equal(1, op.Length);
+        Assert.Equal(2, op.At);
+        Assert.Equal(1, op.Run);
     }
 
     [Fact]
@@ -94,8 +94,8 @@ public sealed class DeleteEditOperationTest
         op.Parse("\"abc\"@2x3!");
 
         Assert.Equal("abc", op.InputText);
-        Assert.Equal(2, op.Position);
-        Assert.Equal(3, op.Length);
+        Assert.Equal(2, op.At);
+        Assert.Equal(3, op.Run);
     }
 
     [Fact]
@@ -105,8 +105,8 @@ public sealed class DeleteEditOperationTest
         op.Parse("@4!");
 
         Assert.Null(op.InputText);
-        Assert.Equal(4, op.Position);
-        Assert.Equal(1, op.Length);
+        Assert.Equal(4, op.At);
+        Assert.Equal(1, op.Run);
     }
 
     [Fact]
@@ -116,8 +116,8 @@ public sealed class DeleteEditOperationTest
         op.Parse("@4x2!");
 
         Assert.Null(op.InputText);
-        Assert.Equal(4, op.Position);
-        Assert.Equal(2, op.Length);
+        Assert.Equal(4, op.At);
+        Assert.Equal(2, op.Run);
     }
 
     [Fact]
@@ -127,8 +127,8 @@ public sealed class DeleteEditOperationTest
         op.Parse("@4×2!");
 
         Assert.Null(op.InputText);
-        Assert.Equal(4, op.Position);
-        Assert.Equal(2, op.Length);
+        Assert.Equal(4, op.At);
+        Assert.Equal(2, op.Run);
     }
 
     [Fact]

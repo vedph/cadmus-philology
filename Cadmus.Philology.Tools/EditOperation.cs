@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Cadmus.Philology.Tools;
@@ -49,13 +48,13 @@ public abstract class EditOperation
     /// <summary>
     /// The start position (1-based) for this operation.
     /// </summary>
-    public int Position { get; set; }
+    public int At { get; set; }
 
     /// <summary>
     /// The length of text to be affected by this operation, starting from
-    /// <see cref="Position"/>. Default is 1.
+    /// <see cref="At"/>. Default is 1.
     /// </summary>
-    public int Length { get; set; } = 1;
+    public int Run { get; set; } = 1;
 
     /// <summary>
     /// An optional note for this operation.
@@ -294,7 +293,7 @@ public abstract class EditOperation
             // insert all characters from target
             InsertAfterEditOperation insert = new()
             {
-                Position = 0,
+                At = 0,
                 Text = target,
                 InputText = includeInputText ? "" : null
             };
@@ -307,8 +306,8 @@ public abstract class EditOperation
             // Delete entire source
             DeleteEditOperation delete = new()
             {
-                Position = 1,
-                Length = source.Length,
+                At = 1,
+                Run = source.Length,
                 InputText = includeInputText ? source : null
             };
             operations.Add(delete);
@@ -343,8 +342,8 @@ public abstract class EditOperation
                     string deletedText = source[sourceIndex..nextMatchInSource];
                     DeleteEditOperation delete = new()
                     {
-                        Position = currentPosition,
-                        Length = deletedText.Length,
+                        At = currentPosition,
+                        Run = deletedText.Length,
                         InputText = includeInputText ? deletedText : null
                     };
                     operations.Add(delete);
@@ -356,7 +355,7 @@ public abstract class EditOperation
                     string insertedText = target[targetIndex..nextMatchInTarget];
                     InsertBeforeEditOperation insert = new()
                     {
-                        Position = currentPosition,
+                        At = currentPosition,
                         Text = insertedText,
                         InputText = includeInputText ? "" : null
                     };
@@ -369,8 +368,8 @@ public abstract class EditOperation
                     // replace single character
                     ReplaceEditOperation replace = new()
                     {
-                        Position = currentPosition,
-                        Length = 1,
+                        At = currentPosition,
+                        Run = 1,
                         ReplacementText = target[targetIndex].ToString(),
                         InputText = includeInputText
                             ? source[sourceIndex].ToString() : null
@@ -389,8 +388,8 @@ public abstract class EditOperation
             string remainingSource = source[sourceIndex..];
             DeleteEditOperation delete = new()
             {
-                Position = currentPosition,
-                Length = remainingSource.Length,
+                At = currentPosition,
+                Run = remainingSource.Length,
                 InputText = includeInputText ? remainingSource : null
             };
             operations.Add(delete);
@@ -401,7 +400,7 @@ public abstract class EditOperation
             string remainingTarget = target[targetIndex..];
             InsertAfterEditOperation insert = new()
             {
-                Position = currentPosition - 1,
+                At = currentPosition - 1,
                 Text = remainingTarget,
                 InputText = includeInputText ? "" : null
             };

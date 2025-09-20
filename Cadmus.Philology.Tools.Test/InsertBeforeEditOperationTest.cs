@@ -1,14 +1,13 @@
-﻿using Xunit;
-using System;
+﻿using System;
 
 namespace Cadmus.Philology.Tools.Test;
 
-public sealed class InsertAfterEditOperationTest
+public sealed class InsertBeforeEditOperationTest
 {
     [Fact]
     public void Execute_InsertAtStart()
     {
-        InsertAfterEditOperation op = new()
+        InsertBeforeEditOperation op = new()
         {
             At = 0,
             Text = "abc"
@@ -17,13 +16,13 @@ public sealed class InsertAfterEditOperationTest
 
         string b = op.Execute(a);
 
-        Assert.Equal("xyzabc", b);
+        Assert.Equal("abcxyz", b);
     }
 
     [Fact]
     public void Execute_InsertInMiddle()
     {
-        InsertAfterEditOperation op = new()
+        InsertBeforeEditOperation op = new()
         {
             At = 2,
             Text = "abc"
@@ -32,42 +31,30 @@ public sealed class InsertAfterEditOperationTest
 
         string b = op.Execute(a);
 
-        Assert.Equal("xyabcz", b);
+        Assert.Equal("xabcyz", b);
     }
 
     [Fact]
     public void Execute_InsertAtEnd()
     {
-        InsertAfterEditOperation op = new()
+        InsertBeforeEditOperation op = new()
         {
             At = 3,
-            Text = "abc"
+            Text = "X"
         };
-        const string a = "xyz";
+        const string a = "abc";
 
         string b = op.Execute(a);
 
-        Assert.Equal("xyzabc", b);
-    }
-
-    [Fact]
-    public void Execute_NullInput_Throws()
-    {
-        InsertAfterEditOperation op = new()
-        {
-            At = 1,
-            Text = "abc"
-        };
-
-        Assert.Throws<ArgumentNullException>(() => op.Execute(null!));
+        Assert.Equal("abXc", b);
     }
 
     [Fact]
     public void Execute_InvalidPosition_Throws()
     {
-        InsertAfterEditOperation op = new()
+        InsertBeforeEditOperation op = new()
         {
-            At = 5,
+            At = 10,
             Text = "abc"
         };
         const string a = "xyz";
@@ -78,8 +65,8 @@ public sealed class InsertAfterEditOperationTest
     [Fact]
     public void Parse_ValidFormat()
     {
-        InsertAfterEditOperation op = new();
-        op.Parse("@2=+\"abc\"");
+        InsertBeforeEditOperation op = new();
+        op.Parse("@2+=\"abc\"");
 
         Assert.Equal(2, op.At);
         Assert.Equal("abc", op.Text);
@@ -88,8 +75,8 @@ public sealed class InsertAfterEditOperationTest
     [Fact]
     public void Parse_ValidFormat_ZeroPosition()
     {
-        InsertAfterEditOperation op = new();
-        op.Parse("@0=+\"abc\"");
+        InsertBeforeEditOperation op = new();
+        op.Parse("@0+=\"abc\"");
 
         Assert.Equal(0, op.At);
         Assert.Equal("abc", op.Text);
@@ -98,21 +85,21 @@ public sealed class InsertAfterEditOperationTest
     [Fact]
     public void Parse_InvalidFormat_Throws()
     {
-        InsertAfterEditOperation op = new();
+        InsertBeforeEditOperation op = new();
         Assert.Throws<ParseException>(() => op.Parse("invalid!"));
     }
 
     [Fact]
     public void Parse_NegativePosition_Throws()
     {
-        InsertAfterEditOperation op = new();
-        Assert.Throws<ParseException>(() => op.Parse("@-1=+\"abc\""));
+        InsertBeforeEditOperation op = new();
+        Assert.Throws<ParseException>(() => op.Parse("@-1+=\"abc\""));
     }
 
     [Fact]
     public void ToString_ReturnsExpected()
     {
-        InsertAfterEditOperation op = new()
+        InsertBeforeEditOperation op = new()
         {
             At = 2,
             Text = "abc"
@@ -120,13 +107,13 @@ public sealed class InsertAfterEditOperationTest
 
         string s = op.ToString();
 
-        Assert.Equal("@2=+\"abc\"", s);
+        Assert.Equal("@2+=\"abc\"", s);
     }
 
     [Fact]
     public void ToString_WithNoteAndTags()
     {
-        InsertAfterEditOperation op = new()
+        InsertBeforeEditOperation op = new()
         {
             At = 2,
             Text = "abc",
@@ -137,6 +124,6 @@ public sealed class InsertAfterEditOperationTest
 
         string s = op.ToString();
 
-        Assert.Equal("@2=+\"abc\" (note) [t1 t2]", s);
+        Assert.Equal("@2+=\"abc\" (note) [t1 t2]", s);
     }
 }

@@ -40,10 +40,10 @@ public sealed class InsertBeforeEditOperation : EditOperation
     /// or appended if the position is zero.</returns>
     public override string Execute(string input)
     {
-        if (Position == 0) return Text + input;
+        if (At == 0) return Text + input;
 
-        ValidatePosition(input, Position);
-        return input.Insert(Position - 1, Text);
+        ValidatePosition(input, At);
+        return input.Insert(At - 1, Text);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public sealed class InsertBeforeEditOperation : EditOperation
             throw new ParseException("Position must be a non-negative integer", 
                 match.Groups[1].Value);
         }
-        Position = position;
+        At = position;
 
         Text = match.Groups[2].Value;
         ParseNoteAndTags(text);
@@ -92,7 +92,7 @@ public sealed class InsertBeforeEditOperation : EditOperation
     public override string ToString()
     {
         StringBuilder sb = new();
-        sb.Append($"@{Position}+=\"{Text}\"");
+        sb.Append($"@{At}+=\"{Text}\"");
 
         if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
 

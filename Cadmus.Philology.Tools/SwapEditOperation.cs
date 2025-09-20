@@ -9,10 +9,25 @@ namespace Cadmus.Philology.Tools;
 /// </summary>
 public sealed class SwapEditOperation : EditOperation
 {
+    /// <summary>
+    /// Gets or sets the type of the operation represented by this instance.
+    /// </summary>
     public override OperationType Type => OperationType.Swap;
-    public int SecondPosition { get; set; }
-    public int SecondLength { get; set; } = 1;
-    public string? SecondInputText { get; set; }
+
+    /// <summary>
+    /// The position of the second substring to swap (1-based).
+    /// </summary>
+    public int At2 { get; set; }
+
+    /// <summary>
+    /// The length of the second substring to swap.
+    /// </summary>
+    public int Run2 { get; set; } = 1;
+
+    /// <summary>
+    /// The optional text associated with the second substring.
+    /// </summary>
+    public string? Text2 { get; set; }
 
     /// <summary>
     /// Executes the swap operation on the given input string.
@@ -26,34 +41,34 @@ public sealed class SwapEditOperation : EditOperation
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        ValidatePosition(input, Position, Length);
-        ValidatePosition(input, SecondPosition, SecondLength);
+        ValidatePosition(input, At, Run);
+        ValidatePosition(input, At2, Run2);
 
-        if (Position == SecondPosition || (Position < SecondPosition && Position + Length > SecondPosition) ||
-            (SecondPosition < Position && SecondPosition + SecondLength > Position))
+        if (At == At2 || (At < At2 && At + Run > At2) ||
+            (At2 < At && At2 + Run2 > At))
         {
             throw new ArgumentException("Swap positions cannot overlap");
         }
 
-        string firstText = input.Substring(Position - 1, Length);
-        string secondText = input.Substring(SecondPosition - 1, SecondLength);
+        string firstText = input.Substring(At - 1, Run);
+        string secondText = input.Substring(At2 - 1, Run2);
 
         StringBuilder result = new(input);
 
         // replace in order of highest position first to avoid index shifting
-        if (Position > SecondPosition)
+        if (At > At2)
         {
-            result.Remove(Position - 1, Length);
-            result.Insert(Position - 1, secondText);
-            result.Remove(SecondPosition - 1, SecondLength);
-            result.Insert(SecondPosition - 1, firstText);
+            result.Remove(At - 1, Run);
+            result.Insert(At - 1, secondText);
+            result.Remove(At2 - 1, Run2);
+            result.Insert(At2 - 1, firstText);
         }
         else
         {
-            result.Remove(SecondPosition - 1, SecondLength);
-            result.Insert(SecondPosition - 1, firstText);
-            result.Remove(Position - 1, Length);
-            result.Insert(Position - 1, secondText);
+            result.Remove(At2 - 1, Run2);
+            result.Insert(At2 - 1, firstText);
+            result.Remove(At - 1, Run);
+            result.Insert(At - 1, secondText);
         }
 
         return result.ToString();
@@ -75,43 +90,52 @@ public sealed class SwapEditOperation : EditOperation
 
         if (!match.Success)
         {
-            throw new ParseException("Invalid swap operation format. Expected: \"text1\"@position1<>\"text2\"@position2", text);
+            throw new ParseException("Invalid swap operation format. " +
+                "Expected: \"text1\"@position1<>\"text2\"@position2", text);
         }
 
         InputText = match.Groups[1].Success ? match.Groups[1].Value : null;
 
-        if (!int.TryParse(match.Groups[2].Value, out int position) || position < 1)
+        if (!int.TryParse(match.Groups[2].Value, out int position)
+            || position < 1)
         {
-            throw new ParseException("First position must be a positive integer", match.Groups[2].Value);
+            throw new ParseException("First position must be a positive integer", 
+                match.Groups[2].Value);
         }
-        Position = position;
+        At = position;
 
-        Length = 1;
+        Run = 1;
         if (match.Groups[3].Success)
         {
-            if (!int.TryParse(match.Groups[3].Value, out int length) || length < 1)
+            if (!int.TryParse(match.Groups[3].Value, out int length) ||
+                length < 1)
             {
-                throw new ParseException("First length must be a positive integer", match.Groups[3].Value);
+                throw new ParseException("First length must be a positive integer",
+                    match.Groups[3].Value);
             }
-            Length = length;
+            Run = length;
         }
 
-        SecondInputText = match.Groups[4].Success ? match.Groups[4].Value : null;
+        Text2 = match.Groups[4].Success ? match.Groups[4].Value : null;
 
-        if (!int.TryParse(match.Groups[5].Value, out int secondPosition) || secondPosition < 1)
+        if (!int.TryParse(match.Groups[5].Value, out int secondPosition) ||
+            secondPosition < 1)
         {
-            throw new ParseException("Second position must be a positive integer", match.Groups[5].Value);
+            throw new ParseException("Second position must be a positive integer",
+                match.Groups[5].Value);
         }
-        SecondPosition = secondPosition;
+        At2 = secondPosition;
 
-        SecondLength = 1;
+        Run2 = 1;
         if (match.Groups[6].Success)
         {
-            if (!int.TryParse(match.Groups[6].Value, out int secondLength) || secondLength < 1)
+            if (!int.TryParse(match.Groups[6].Value, out int secondLength) ||
+                secondLength < 1)
             {
-                throw new ParseException("Second length must be a positive integer", match.Groups[6].Value);
+                throw new ParseException("Second length must be a positive integer",
+                    match.Groups[6].Value);
             }
-            SecondLength = secondLength;
+            Run2 = secondLength;
         }
 
         ParseNoteAndTags(text);
@@ -127,15 +151,14 @@ public sealed class SwapEditOperation : EditOperation
 
         if (!string.IsNullOrEmpty(InputText)) sb.Append($"\"{InputText}\"");
 
-        sb.Append($"@{Position}");
-        if (Length > 1) sb.Append($"x{Length}");
+        sb.Append($"@{At}");
+        if (Run > 1) sb.Append($"x{Run}");
         sb.Append("<>");
 
-        if (!string.IsNullOrEmpty(SecondInputText))
-            sb.Append($"\"{SecondInputText}\"");
+        if (!string.IsNullOrEmpty(Text2)) sb.Append($"\"{Text2}\"");
 
-        sb.Append($"@{SecondPosition}");
-        if (SecondLength > 1) sb.Append($"x{SecondLength}");
+        sb.Append($"@{At2}");
+        if (Run2 > 1) sb.Append($"x{Run2}");
 
         if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
 

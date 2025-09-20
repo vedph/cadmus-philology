@@ -27,8 +27,8 @@ public sealed class DeleteEditOperation : EditOperation
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        ValidatePosition(input, Position, Length);
-        return input.Remove(Position - 1, Length);
+        ValidatePosition(input, At, Run);
+        return input.Remove(At - 1, Run);
     }
 
     /// <summary>
@@ -64,9 +64,9 @@ public sealed class DeleteEditOperation : EditOperation
             throw new ParseException("Position must be a positive integer", 
                 match.Groups[2].Value);
         }
-        Position = position;
+        At = position;
 
-        Length = 1;
+        Run = 1;
         if (match.Groups[3].Success)
         {
             if (!int.TryParse(match.Groups[3].Value, out int length) || length < 1)
@@ -74,7 +74,7 @@ public sealed class DeleteEditOperation : EditOperation
                 throw new ParseException("Length must be a positive integer", 
                     match.Groups[3].Value);
             }
-            Length = length;
+            Run = length;
         }
 
         ParseNoteAndTags(text);
@@ -91,8 +91,8 @@ public sealed class DeleteEditOperation : EditOperation
         if (!string.IsNullOrEmpty(InputText))
             sb.Append($"\"{InputText}\"");
 
-        sb.Append($"@{Position}");
-        if (Length > 1) sb.Append($"x{Length}");
+        sb.Append($"@{At}");
+        if (Run > 1) sb.Append($"x{Run}");
         sb.Append('!');
 
         if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
