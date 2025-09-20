@@ -250,6 +250,181 @@ public abstract class EditOperation
     }
 
     /// <summary>
+    /// Checks if the given text is uniquely added by only one operation in the list.
+    /// </summary>
+    /// <param name="ops">The list of operations to check.</param>
+    /// <param name="text">The text to search for.</param>
+    /// <param name="excludeIndex">The index to exclude from the search.</param>
+    /// <param name="insertOnly">If true, only consider insert operations.</param>
+    /// <returns>True if the text is added by only one operation, false otherwise.
+    /// </returns>
+    private static bool IsUniqueAddedText(List<EditOperation> ops, string text,
+        int excludeIndex, bool insertOnly)
+    {
+        int count = 0;
+
+        for (int i = 0; i < ops.Count; i++)
+        {
+            if (i == excludeIndex) continue;
+
+            EditOperation op = ops[i];
+            string? addedText = null;
+
+            if (op is InsertBeforeEditOperation insertBefore)
+            {
+                addedText = insertBefore.Text;
+            }
+            else if (op is InsertAfterEditOperation insertAfter)
+            {
+                addedText = insertAfter.Text;
+            }
+            else if (!insertOnly && op is ReplaceEditOperation replaceOp)
+            {
+                addedText = replaceOp.ReplacementText;
+            }
+
+            if (addedText == text)
+            {
+                count++;
+                if (count > 0) return false; // more than one operation adds this text
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the target position for a move operation based on the add operation.
+    /// </summary>
+    /// <param name="addOp">The add operation (insert or replace).</param>
+    /// <returns>The target position for the move operation.</returns>
+    private static int GetTargetPositionForMove(EditOperation addOp)
+    {
+        return addOp switch
+        {
+            // adjust for original string coordinates
+            InsertBeforeEditOperation => addOp.At + 1,
+            InsertAfterEditOperation => addOp.At + 1,
+            ReplaceEditOperation => addOp.At,
+            _ => addOp.At
+        };
+    }
+
+    /// <summary>
+    /// Adjusts the given list of edit operations by merging compatible operations
+    /// into move operations where possible.
+    /// </summary>
+    /// <param name="ops">The list of edit operations to adjust.</param>
+    /// <param name="insertOnly">If true, only consider insert operations for
+    /// merging.
+    /// If false, consider both insert and replace operations.</param>
+    /// <returns>A new list of adjusted edit operations.</returns>
+    private static IList<EditOperation> AdjustDiffOperations(
+        List<EditOperation> ops, bool insertOnly = false)
+    {
+        if (ops.Count < 2) return [.. ops];
+
+        List<EditOperation> adjusted = [];
+        HashSet<int> processed = [];
+
+        for (int i = 0; i < ops.Count; i++)
+        {
+            if (processed.Contains(i))
+                continue;
+
+            EditOperation currentOp = ops[i];
+
+            // look for delete operations
+            if (currentOp is DeleteEditOperation deleteOp &&
+                !string.IsNullOrEmpty(deleteOp.InputText))
+            {
+                string deletedText = deleteOp.InputText;
+                int matchingOpIndex = -1;
+
+                // find a matching insert or replace operation
+                for (int j = 0; j < ops.Count; j++)
+                {
+                    if (j == i || processed.Contains(j))
+                        continue;
+
+                    EditOperation otherOp = ops[j];
+                    string? addedText = null;
+
+                    // check insert operations
+                    if (otherOp is InsertBeforeEditOperation insertBefore)
+                    {
+                        addedText = insertBefore.Text;
+                    }
+                    else if (otherOp is InsertAfterEditOperation insertAfter)
+                    {
+                        addedText = insertAfter.Text;
+                    }
+                    // check replace operations (if not insert-only)
+                    else if (!insertOnly && otherOp
+                        is ReplaceEditOperation replaceOp)
+                    {
+                        addedText = replaceOp.ReplacementText;
+                    }
+
+                    // check if the deleted text matches the added text
+                    if (addedText == deletedText)
+                    {
+                        // verify this is the only operation adding this text
+                        if (IsUniqueAddedText(ops, deletedText, j, insertOnly))
+                        {
+                            matchingOpIndex = j;
+                            break;
+                        }
+                    }
+                }
+
+                if (matchingOpIndex >= 0)
+                {
+                    // create a move operation instead
+                    EditOperation addOp = ops[matchingOpIndex];
+
+                    MoveBeforeEditOperation moveOp = new()
+                    {
+                        At = deleteOp.At,
+                        Run = deleteOp.Run,
+                        To = GetTargetPositionForMove(addOp),
+                        InputText = deleteOp.InputText,
+                        Note = deleteOp.Note,
+                        Tags = [.. deleteOp.Tags]
+                    };
+
+                    // copy notes and tags from the add operation if
+                    // the delete operation doesn't have them
+                    if (string.IsNullOrEmpty(moveOp.Note) &&
+                        !string.IsNullOrEmpty(addOp.Note))
+                    {
+                        moveOp.Note = addOp.Note;
+                    }
+
+                    if (moveOp.Tags.Count == 0 && addOp.Tags.Count > 0)
+                        moveOp.Tags = [.. addOp.Tags];
+
+                    adjusted.Add(moveOp);
+                    processed.Add(i);
+                    processed.Add(matchingOpIndex);
+                }
+                else
+                {
+                    adjusted.Add(currentOp);
+                    processed.Add(i);
+                }
+            }
+            else
+            {
+                adjusted.Add(currentOp);
+                processed.Add(i);
+            }
+        }
+
+        return adjusted;
+    }
+
+    /// <summary>
     /// Computes the sequence of edit operations required to transform the
     /// <paramref name="source"/> string into the <paramref name="target"/> string.
     /// </summary>
@@ -276,12 +451,19 @@ public abstract class EditOperation
     /// in the resulting operations. If <see langword="true"/>, the
     /// <c>InputText</c> property of each operation will be populated;
     /// otherwise, it will be <see langword="null"/>.</param>
+    /// <param name="adjust">A boolean value indicating whether to adjust
+    /// the operations by merging compatible delete and insert/replace operations
+    /// into move operations. Default is true.</param>
+    /// <param name="insertOnly">When <paramref name="adjust"/> is true,
+    /// this parameter determines whether to only consider insert operations
+    /// for merging (true) or to include replace operations as well (false).
+    /// Default is false.</param>
     /// <returns>A list of <see cref="EditOperation"/> objects representing
     /// the sequence of transformations needed to convert the
     /// <paramref name="source"/> string into the <paramref name="target"/>
     /// string. The list will be empty if both strings are empty.</returns>
     public static IList<EditOperation> Diff(string source, string target,
-        bool includeInputText = true)
+        bool includeInputText = true, bool adjust = true, bool insertOnly = false)
     {
         List<EditOperation> operations = [];
 
@@ -405,6 +587,13 @@ public abstract class EditOperation
                 InputText = includeInputText ? "" : null
             };
             operations.Add(insert);
+        }
+
+        // apply adjustments if requested
+        if (adjust)
+        {
+            operations = (List<EditOperation>)
+                AdjustDiffOperations(operations, insertOnly);
         }
 
         return operations;
