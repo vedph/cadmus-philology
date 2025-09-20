@@ -1,0 +1,80 @@
+﻿using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Cadmus.Philology.Tools;
+
+/// <summary>
+/// Represents an operation that inserts a specified text at a given position
+/// in the input string.
+/// </summary>
+/// <remarks>This operation appends the <see cref="Text"/> to the
+/// end of the input string if the position is zero. Otherwise, it inserts
+/// the <see cref="Text"/> at the specified position in the input
+/// string. The position must be within the bounds of the input string,
+/// or an exception will be thrown.</remarks>
+public sealed class InsertAfterEditOperation : EditOperation
+{
+    /// <summary>
+    /// Gets the type of the operation represented by this instance.
+    /// </summary>
+    public override OperationType Type => OperationType.InsertAfter;
+
+    /// <summary>
+    /// Gets or sets the text to be inserted.
+    /// </summary>
+    public string Text { get; set; } = "";
+
+    /// <summary>
+    /// Inserts the specified text into the input string at the defined position
+    /// or appends it if the position is zero.
+    /// </summary>
+    /// <param name="input">The string into which the text will be inserted or
+    /// appended.</param>
+    /// <returns>A new string with the specified text inserted at the defined
+    /// position or appended if the position is zero.</returns>
+    /// <exception cref="ArgumentNullException">input</exception>
+    public override string Execute(string input)
+    {
+        ArgumentNullException.ThrowIfNull(input);
+
+        if (Position == 0) return input + Text;
+
+        ValidatePosition(input, Position);
+        return input.Insert(Position, Text);
+    }
+
+    public override void Parse(string dslText)
+    {
+        // pattern: @N=+"B"
+        string pattern = @"@(\d+)\s*=\+\s*""([^""]*)""";
+        Match match = Regex.Match(dslText, pattern, RegexOptions.IgnoreCase);
+
+        if (!match.Success)
+        {
+            throw new ParseException("Invalid insert-after operation format. " +
+                "Expected: @position=+\"text\"", dslText);
+        }
+
+        if (!int.TryParse(match.Groups[1].Value, out int position) || position < 0)
+        {
+            throw new ParseException("Position must be a non-negative integer", 
+                match.Groups[1].Value);
+        }
+        Position = position;
+
+        Text = match.Groups[2].Value;
+        ParseNoteAndTags(dslText);
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new();
+        sb.Append($"@{Position}=+\"{Text}\"");
+
+        if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
+
+        if (Tags.Count != 0) sb.Append($" [{string.Join(" ", Tags)}]");
+
+        return sb.ToString();
+    }
+}

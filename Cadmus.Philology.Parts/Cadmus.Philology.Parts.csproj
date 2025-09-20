@@ -20,8 +20,8 @@
 
   <ItemGroup>
 	<PackageReference Include="DiffMatchPatch" Version="4.0.0" />
-	<PackageReference Include="Cadmus.Core" Version="8.0.6" />
-	<PackageReference Include="Cadmus.Refs.Bricks" Version="6.0.0" />
+	<PackageReference Include="Cadmus.Core" Version="8.0.10" />
+	<PackageReference Include="Cadmus.Refs.Bricks" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
