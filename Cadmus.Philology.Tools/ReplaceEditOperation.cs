@@ -7,7 +7,7 @@ namespace Cadmus.Philology.Tools;
 /// <summary>
 /// Replace edit operation.
 /// </summary>
-public class ReplaceEditOperation : EditOperation
+public sealed class ReplaceEditOperation : EditOperation
 {
     /// <summary>
     /// Gets the type of operation.
@@ -28,6 +28,12 @@ public class ReplaceEditOperation : EditOperation
     {
         ArgumentNullException.ThrowIfNull(input);
 
+        if (Run < 1)
+        {
+            throw new ArgumentOutOfRangeException("position",
+                $"Position {Run} is out of range a replace");
+
+        }
         ValidatePosition(input, At, Run);
         StringBuilder result = new(input);
         result.Remove(At - 1, Run);
