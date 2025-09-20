@@ -295,18 +295,29 @@ public abstract class EditOperation
 
     /// <summary>
     /// Gets the target position for a move operation based on the add operation.
+    /// Converts the add operation's position to original string coordinates.
     /// </summary>
     /// <param name="addOp">The add operation (insert or replace).</param>
-    /// <returns>The target position for the move operation.</returns>
-    private static int GetTargetPositionForMove(EditOperation addOp)
+    /// <param name="deleteOp">The delete operation being merged.</param>
+    /// <returns>The target position for the move operation in original string
+    /// coordinates.</returns>
+    private static int GetTargetPositionForMove(EditOperation addOp,
+        DeleteEditOperation deleteOp)
     {
+        int targetPos = addOp.At;
+        
+        // adjust for the delete operation that would have been applied before
+        // this add operation. If the add operation's position is after the
+        // delete position, we need to account for the deleted characters when
+        // mapping back to original coordinates
+        if (targetPos > deleteOp.At) targetPos += deleteOp.Run;
+        
         return addOp switch
         {
-            // adjust for original string coordinates
-            InsertBeforeEditOperation => addOp.At + 1,
-            InsertAfterEditOperation => addOp.At + 1,
-            ReplaceEditOperation => addOp.At,
-            _ => addOp.At
+            InsertBeforeEditOperation => targetPos,
+            InsertAfterEditOperation => targetPos + 1,
+            ReplaceEditOperation => targetPos,
+            _ => targetPos
         };
     }
 
@@ -387,7 +398,7 @@ public abstract class EditOperation
                     {
                         At = deleteOp.At,
                         Run = deleteOp.Run,
-                        To = GetTargetPositionForMove(addOp),
+                        To = GetTargetPositionForMove(addOp, deleteOp),
                         InputText = deleteOp.InputText,
                         Note = deleteOp.Note,
                         Tags = [.. deleteOp.Tags]
