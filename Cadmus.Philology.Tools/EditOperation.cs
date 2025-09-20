@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Cadmus.Philology.Tools;
@@ -83,15 +85,6 @@ public abstract class EditOperation
     /// Parses coordinates in the format @N or @NxN from the given input string.
     /// </summary>
     /// <param name="text">The text to parse.</param>
-    /// <param name="position"></param>
-    /// <param name="length"></param>
-    /// <exception cref="ParseException"></exception>
-    // ... (other code remains unchanged)
-
-    /// <summary>
-    /// Parses coordinates in the format @N or @NxN from the given input string.
-    /// </summary>
-    /// <param name="text">The text to parse.</param>
     /// <returns>A tuple containing position and length.</returns>
     /// <exception cref="ParseException"></exception>
     protected static (int position, int length) ParseCoordinates(string text)
@@ -149,8 +142,8 @@ public abstract class EditOperation
             string tagsText = tagsMatch.Groups[1].Value.Trim();
             if (!string.IsNullOrEmpty(tagsText))
             {
-                Tags = tagsText.Split([' ', '\t'],
-                    StringSplitOptions.RemoveEmptyEntries).ToList();
+                Tags = [.. tagsText.Split([' ', '\t'],
+                    StringSplitOptions.RemoveEmptyEntries)];
             }
         }
     }
@@ -206,6 +199,12 @@ public abstract class EditOperation
         }
     }
 
+    /// <summary>
+    /// Parse the given DSL text and return the corresponding operation.
+    /// </summary>
+    /// <param name="text">text</param>
+    /// <returns>Operation</returns>
+    /// <exception cref="ParseException"></exception>
     public static EditOperation ParseOperation(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
