@@ -38,6 +38,14 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     public string? Standard { get; set; }
 
     /// <summary>
+    /// The language of the form, if applicable. This can be a BCP 47 code
+    /// or similar, usually from thesaurus <c>orthography-languages</c>, and
+    /// is used when the language of the form is different from the main or
+    /// default language.
+    /// </summary>
+    public string? Language { get; set; }
+
+    /// <summary>
     /// A generic tag to classify or group fragments.
     /// </summary>
     public string? Tag { get; set; }
@@ -152,6 +160,26 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
             }
         }
 
+        // language
+        if (!string.IsNullOrEmpty(Language))
+        {
+            pins.Add(new DataPin
+            {
+                Name = PartBase.FR_PREFIX + "orth-lng",
+                Value = Language
+            });
+        }
+
+        // tag
+        if (!string.IsNullOrEmpty(Tag))
+        {
+            pins.Add(new DataPin
+            {
+                Name = PartBase.FR_PREFIX + "orth-tag",
+                Value = Tag
+            });
+        }
+
         return pins;
     }
 
@@ -172,6 +200,12 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
             new DataPinDefinition(DataPinValueType.String,
                 PartBase.FR_PREFIX + "orth-std",
                 "The standard orthography from the fragment."),
+            new DataPinDefinition(DataPinValueType.String,
+                PartBase.FR_PREFIX + "orth-lng",
+                "The language of the misspelled form."),
+            new DataPinDefinition(DataPinValueType.String,
+                PartBase.FR_PREFIX + "orth-tag",
+                "The general tag for the misspelling entry."),
         ]);
     }
 

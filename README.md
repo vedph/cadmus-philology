@@ -18,7 +18,7 @@ This solution contains the Cadmus philologic parts library.
   - updated packages.
   - added `Cadmus.Philology.Tools`.
   - ⚠️ refactored `OrthographyLayerFragment`:
-    - added `tag` and `note`.
+    - added `language`, `tag`, `note`.
     - replaced `MspOperation` with `EditOperation`. Formally this is not a breaking change for the model shape, but the DSL used in operations strings changes.
 
 ### 9.0.3
