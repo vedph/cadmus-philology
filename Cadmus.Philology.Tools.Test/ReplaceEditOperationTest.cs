@@ -179,6 +179,6 @@ public sealed class ReplaceEditOperationTest
 
         string s = op.ToString();
 
-        Assert.Equal("\"abc\"@2x3=\"XY\" (note) [t1 t2]", s);
+        Assert.Equal("\"abc\"@2x3=\"XY\" [t1 t2] {note}", s);
     }
 }

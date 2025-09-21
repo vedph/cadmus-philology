@@ -100,9 +100,9 @@ public sealed class ReplaceEditOperation : EditOperation
         if (Run > 1) sb.Append($"x{Run}");
         sb.Append($"=\"{ReplacementText}\"");
 
-        if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
-
         if (Tags.Count > 0) sb.Append($" [{string.Join(" ", Tags)}]");
+
+        if (!string.IsNullOrEmpty(Note)) sb.Append($" {{{Note}}}");
 
         return sb.ToString();
     }

@@ -94,9 +94,9 @@ public sealed class InsertAfterEditOperation : EditOperation
         StringBuilder sb = new();
         sb.Append($"@{At}=+\"{Text}\"");
 
-        if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
-
         if (Tags.Count != 0) sb.Append($" [{string.Join(" ", Tags)}]");
+
+        if (!string.IsNullOrEmpty(Note)) sb.Append($" {{{Note}}}");
 
         return sb.ToString();
     }

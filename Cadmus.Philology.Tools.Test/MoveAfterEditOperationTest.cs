@@ -220,6 +220,6 @@ public sealed class MoveAfterEditOperationTest
 
         string s = op.ToString();
 
-        Assert.Equal("\"abc\"@2x3->@5 (note) [t1 t2]", s);
+        Assert.Equal("\"abc\"@2x3->@5 [t1 t2] {note}", s);
     }
 }

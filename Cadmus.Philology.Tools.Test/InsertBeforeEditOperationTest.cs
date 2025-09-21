@@ -124,6 +124,6 @@ public sealed class InsertBeforeEditOperationTest
 
         string s = op.ToString();
 
-        Assert.Equal("@2+=\"abc\" (note) [t1 t2]", s);
+        Assert.Equal("@2+=\"abc\" [t1 t2] {note}", s);
     }
 }

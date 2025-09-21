@@ -160,9 +160,9 @@ public sealed class SwapEditOperation : EditOperation
         sb.Append($"@{At2}");
         if (Run2 > 1) sb.Append($"x{Run2}");
 
-        if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
-
         if (Tags.Count > 0) sb.Append($" [{string.Join(" ", Tags)}]");
+
+        if (!string.IsNullOrEmpty(Note)) sb.Append($" {{{Note}}}");
 
         return sb.ToString();
     }

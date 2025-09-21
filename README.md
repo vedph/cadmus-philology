@@ -14,7 +14,7 @@ This solution contains the Cadmus philologic parts library.
 
 ### 10.0.0
 
-- 2025-09-20:
+- 2025-09-21:
   - updated packages.
   - added `Cadmus.Philology.Tools`.
   - ⚠️ refactored `OrthographyLayerFragment`:

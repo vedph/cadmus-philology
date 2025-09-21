@@ -141,9 +141,9 @@ public sealed class MoveBeforeEditOperation : EditOperation
         if (Run > 1) sb.Append($"x{Run}");
         sb.Append($">@{To}");
 
-        if (!string.IsNullOrEmpty(Note)) sb.Append($" ({Note})");
-
         if (Tags.Count > 0) sb.Append($" [{string.Join(" ", Tags)}]");
+
+        if (!string.IsNullOrEmpty(Note)) sb.Append($" {{{Note}}}");
 
         return sb.ToString();
     }

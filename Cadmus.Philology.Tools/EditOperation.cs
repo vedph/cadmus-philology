@@ -28,7 +28,7 @@ public abstract class EditOperation
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     protected static readonly Regex NoteRegex = new(
-        @"\(([^)]*)\)",
+        @"\{([^)]*)\}",
         RegexOptions.Compiled);
 
     protected static readonly Regex TagsRegex = new(

@@ -211,6 +211,6 @@ public sealed class SwapEditOperationTest
 
         string s = op.ToString();
 
-        Assert.Equal("\"abc\"@2x2<>\"def\"@5x2 (note) [t1 t2]", s);
+        Assert.Equal("\"abc\"@2x2<>\"def\"@5x2 [t1 t2] {note}", s);
     }
 }
