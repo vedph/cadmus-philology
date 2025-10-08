@@ -12,6 +12,10 @@ This solution contains the Cadmus philologic parts library.
 
 ## History
 
+### 10.0.1
+
+- 2025-10-08: updated packages.
+
 ### 10.0.0
 
 - 2025-09-21:
