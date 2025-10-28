@@ -75,6 +75,7 @@ namespace Cadmus.Philology.Parts;
 /// All the operations may optionally have a classification tag
 /// (in <c>[]</c>), and a short note (in <c>{}</c>).
 /// </remarks>
+[Obsolete("Use Cadmus.Philology.Tools.EditOperation instead.")]
 public sealed class MspOperation
 {
     private static readonly Regex _tagRegex = new("^[-0-9a-zA-Z_.]+$");

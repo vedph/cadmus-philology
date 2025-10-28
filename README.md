@@ -12,6 +12,10 @@ This solution contains the Cadmus philologic parts library.
 
 ## History
 
+### 11.0.0
+
+- 2025-10-28: ⚠️ minor breaking change: `OrthographyLayerFragment.Tag` (`string`) changed to `OrthographyLayerFragment.Tags` (`List<string>`).
+
 ### 10.0.1
 
 - 2025-10-08: updated packages.

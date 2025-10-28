@@ -46,9 +46,9 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     public string? Language { get; set; }
 
     /// <summary>
-    /// A generic tag to classify or group fragments.
+    /// Generic tags to classify or group fragments.
     /// </summary>
-    public string? Tag { get; set; }
+    public List<string>? Tags { get; set; }
 
     /// <summary>
     /// A generic free text note.
@@ -170,14 +170,17 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
             });
         }
 
-        // tag
-        if (!string.IsNullOrEmpty(Tag))
+        // tags
+        if (Tags?.Count > 0)
         {
-            pins.Add(new DataPin
+            foreach (string tag in Tags)
             {
-                Name = PartBase.FR_PREFIX + "orth-tag",
-                Value = Tag
-            });
+                pins.Add(new DataPin
+                {
+                    Name = PartBase.FR_PREFIX + "orth-tag",
+                    Value = tag
+                });
+            }
         }
 
         return pins;
@@ -205,7 +208,8 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
                 "The language of the misspelled form."),
             new DataPinDefinition(DataPinValueType.String,
                 PartBase.FR_PREFIX + "orth-tag",
-                "The general tag for the misspelling entry."),
+                "The general tags for the orthography entry.",
+                "M"),
         ]);
     }
 
