@@ -46,5 +46,5 @@ For the DSL syntax:
 
 - `"A"` stands for the text value of the selected input in the operation. This is optional, but often added for clarity. When producing operations by diffing, you can choose whether to add this or not.
 - `"X"` stands for the text value which is replacing the input or being added to the input or being swapped with the input.
-- `@NxN` or just `@N` is the coordinates of the characters selected. The first `N` is the ordinal in the input (=A) word: 1=first character, 2=second, etc. The second `N` after the `x` (which can also be replaced by `�`) is the number of characters to select; when not specified, it defaults to 1. So, given an input form "FECIT", `@1`="F", `@3x2`="CI".
+- `@NxN` or just `@N` is the coordinates of the characters selected. The first `N` is the ordinal in the input (=A) word: 1=first character, 2=second, etc. The second `N` after the `x` (which can also be replaced by `×`) is the number of characters to select; when not specified, it defaults to 1. So, given an input form "FECIT", `@1`="F", `@3x2`="CI".
 - after all the operations, we can add a free text note between `{}`: e.g. `"X"@1="V" {my note here}` and/or string tags separated by spaces and included in `[]`: e.g. `"X"@1="V" [tag1 tag2]`.
