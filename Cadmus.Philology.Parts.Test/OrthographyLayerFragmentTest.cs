@@ -2,7 +2,6 @@
 using Cadmus.General.Parts;
 using Fusi.Tools.Configuration;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Xunit;
 
@@ -16,7 +15,7 @@ public sealed class OrthographyLayerFragmentTest
         OrthographyLayerFragment fr = new()
         {
             Location = "1.23",
-            Standard = "vixit",
+            Reference = "vixit",
         };
         foreach (string operation in operations)
             fr.Operations.Add(operation);
@@ -44,7 +43,7 @@ public sealed class OrthographyLayerFragmentTest
 
         Assert.NotNull(fr2);
         Assert.Equal(fr.Location, fr2!.Location);
-        Assert.Equal(fr.Standard, fr2.Standard);
+        Assert.Equal(fr.Reference, fr2.Reference);
         Assert.Equal(fr.Operations.Count, fr2.Operations.Count);
         Assert.Equal(fr.Operations[0], fr2.Operations[0]);
     }
@@ -86,19 +85,19 @@ public sealed class OrthographyLayerFragmentTest
         OrthographyLayerFragment fr = new()
         {
             Location = "1.2",
-            Standard = "vixit",
+            Reference = "vixit",
         };
         layerPart.AddFragment(fr);
         item.Parts.Add(layerPart);
 
-        List<DataPin> pins = fr.GetDataPins(item).ToList();
+        List<DataPin> pins = [.. fr.GetDataPins(item)];
         Assert.Equal(2, pins.Count);
 
         DataPin? pin = pins.Find(p => p.Name == "fr.orth-txt");
         Assert.NotNull(pin);
         Assert.Equal("bixit", pin!.Value);
 
-        pin = pins.Find(p => p.Name == "fr.orth-std");
+        pin = pins.Find(p => p.Name == "fr.orth-ref");
         Assert.NotNull(pin);
         Assert.Equal("vixit", pin!.Value);
     }
@@ -119,7 +118,7 @@ public sealed class OrthographyLayerFragmentTest
             "\"e\"@1x1=\"ae\" [v]",
             "\"b\"@1x1=\"p\" [c]");
 
-        List<DataPin> pins = fr.GetDataPins().ToList();
+        List<DataPin> pins = [.. fr.GetDataPins()];
 
         Assert.Equal(2, pins.Count);
         DataPin pin = pins[0];

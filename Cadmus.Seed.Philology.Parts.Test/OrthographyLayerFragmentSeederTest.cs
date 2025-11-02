@@ -47,7 +47,7 @@ public sealed class OrthographyLayerFragmentSeederTest
         Assert.NotNull(fr);
 
         Assert.Equal("1.1", fr!.Location);
-        Assert.NotNull(fr.Standard);
+        Assert.NotNull(fr.Reference);
         Assert.Single(fr.Operations);
         MspOperation? op = MspOperation.Parse(fr.Operations[0]);
         Assert.Null(op!.Tag);
@@ -71,7 +71,7 @@ public sealed class OrthographyLayerFragmentSeederTest
         Assert.NotNull(fr);
 
         Assert.Equal("1.1", fr!.Location);
-        Assert.NotNull(fr.Standard);
+        Assert.NotNull(fr.Reference);
         Assert.Single(fr.Operations);
         MspOperation? op = MspOperation.Parse(fr.Operations[0]);
         Assert.NotNull(op!.Tag);

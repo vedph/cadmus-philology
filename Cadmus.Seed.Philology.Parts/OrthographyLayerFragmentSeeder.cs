@@ -87,7 +87,7 @@ public sealed class OrthographyLayerFragmentSeeder : FragmentSeederBase,
         OrthographyLayerFragment fragment = new()
         {
             Location = location,
-            Standard = standard
+            Reference = standard
         };
         fragment.Operations.Add(op.ToString());
 

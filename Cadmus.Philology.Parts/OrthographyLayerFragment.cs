@@ -32,10 +32,11 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     public string Location { get; set; } = "";
 
     /// <summary>
-    /// Gets or sets the standard orthography form for the word linked to
-    /// this fragment.
+    /// Gets or sets the reference form for the word linked to this fragment.
+    /// If you are using standard orthography in the base text, this is the
+    /// attested form; otherwise, it is the standard orthography form.
     /// </summary>
-    public string? Standard { get; set; }
+    public string? Reference { get; set; }
 
     /// <summary>
     /// The language of the form, if applicable. This can be a BCP 47 code
@@ -57,11 +58,18 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
 
     /// <summary>
     /// Gets or sets the operations describing the relationship between the
-    /// <see cref="Standard"/> form and the orthographically deviated form.
+    /// <see cref="Reference"/> form and the orthographically deviated form.
     /// Each operation is a text representing a <see cref="MspOperation"/>,
     /// to be parsed by <see cref="MspOperation.Parse(string)"/>.
     /// </summary>
     public List<string> Operations { get; set; } = [];
+
+    /// <summary>
+    /// True if the base text is the target of operations; false if the
+    /// reference form is the target. This determines the source and target
+    /// forms used by operations.
+    /// </summary>
+    public bool IsTextTarget { get; set; }
 
     private List<EditOperation> ParseOperations()
     {
@@ -90,8 +98,8 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     /// <para>Also, if <paramref name="item"/> is received and it has
     /// a base text part and an orthography layer part, two additional pins
     /// are returned: <c>fr.orth-txt</c> with the original orthography
-    /// got from the base text, and <c>fr.orth.std</c> with the
-    /// <see cref="Standard"/> orthography from this fragment.</para>
+    /// got from the base text, and <c>fr.orth.ref</c> with the
+    /// <see cref="Reference"/> orthography from this fragment.</para>
     /// </remarks>
     /// <returns>The pins.</returns>
     public IEnumerable<DataPin> GetDataPins(IItem? item = null)
@@ -154,8 +162,8 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
                 });
                 pins.Add(new DataPin
                 {
-                    Name = PartBase.FR_PREFIX + "orth-std",
-                    Value = Standard
+                    Name = PartBase.FR_PREFIX + "orth-ref",
+                    Value = Reference
                 });
             }
         }
@@ -201,8 +209,8 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
                 PartBase.FR_PREFIX + "orth-txt",
                 "The original orthography from the base text."),
             new DataPinDefinition(DataPinValueType.String,
-                PartBase.FR_PREFIX + "orth-std",
-                "The standard orthography from the fragment."),
+                PartBase.FR_PREFIX + "orth-ref",
+                "The reference orthography from the fragment."),
             new DataPinDefinition(DataPinValueType.String,
                 PartBase.FR_PREFIX + "orth-lng",
                 "The language of the misspelled form."),
@@ -221,7 +229,7 @@ public sealed class OrthographyLayerFragment : ITextLayerFragment
     /// </returns>
     public override string ToString()
     {
-        return $"[Orthography] {Location} {Standard} " +
+        return $"[Orthography] {Location} {Reference} " +
                (Operations != null ?
                Operations.Count.ToString(CultureInfo.InvariantCulture) : "");
     }
