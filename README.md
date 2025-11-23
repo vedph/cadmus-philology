@@ -12,6 +12,10 @@ This solution contains the Cadmus philologic parts library.
 
 ## History
 
+### 12.0.0
+
+- 2025-11-23: ⚠️ upgraded to NET 10.
+
 ### 11.0.1
 
 - 2025-11-02:
