@@ -13,13 +13,13 @@
 		<Copyright>By Daniele Fusi</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<PackageTags>Cadmus;seed</PackageTags>
-		<Version>12.0.1</Version>
-		<FileVersion>12.0.1</FileVersion>
-		<AssemblyVersion>12.0.1</AssemblyVersion>
+		<Version>12.0.2</Version>
+		<FileVersion>12.0.2</FileVersion>
+		<AssemblyVersion>12.0.2</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Cadmus.Seed" Version="10.0.1" />
+		<PackageReference Include="Cadmus.Seed" Version="10.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>

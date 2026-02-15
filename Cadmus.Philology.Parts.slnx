@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Pack.bat" />
+    <File Path="Push.bat" />
+    <File Path="PushLocal.bat" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Cadmus.Philology.Parts.Test/Cadmus.Philology.Parts.Test.csproj" />
+  <Project Path="Cadmus.Philology.Parts/Cadmus.Philology.Parts.csproj" />
+  <Project Path="Cadmus.Philology.Tools.Test/Cadmus.Philology.Tools.Test.csproj" />
+  <Project Path="Cadmus.Philology.Tools/Cadmus.Philology.Tools.csproj" />
+  <Project Path="Cadmus.Seed.Philology.Parts.Test/Cadmus.Seed.Philology.Parts.Test.csproj" />
+  <Project Path="Cadmus.Seed.Philology.Parts/Cadmus.Seed.Philology.Parts.csproj" />
+</Solution>
